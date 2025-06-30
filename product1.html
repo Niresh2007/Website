@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Muruga Traders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+   
+    .hover-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .hover-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+  
+  </style>
+</head>
+<body>
+    <header class="sticky-top">
+        <nav class="navbar navbar-dark text-white bg-dark navbar-expand-lg navbar-expand-md border-bottom shadow-sm" style="background-image: url('https://cdn.globalso.com/goldenpowerfj/Fiber_20Cement_20Siding_20That_20Looks_20LIke_20Wood_203-11.png');background-size: cover;">
+            <div class="container-fluid">
+                <!-- Logo & Brand -->
+                 <div class="d-flex align-items-center">
+                <img src="https://i.pinimg.com/736x/b2/51/25/b2512526e7727814658f4c2eda14beac.jpg"
+                         onerror="this.onerror=null;this.src='https://placehold.co/40x40/cccccc/white?text=Traders';"
+                         class="rounded-circle me-2"
+                         alt="Logo"
+                         width="45"
+                         height="45">
+                <h4>OM MURUGA TRADERS</h4>
+            </div>
+            <button class="btn bg-light text-black">Login</button>
+            </div>
+        </nav>
+    </header>
+     <main style="background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/source/ff986328573043.55c76ee2e38ca.gif');background-size: cover;">
+        <div class=" ms-5 ps-5 mt-0">
+            <h4 class="fw-bold ms-5 ps-5 pt-5 " style="font-family: 'Poppins', sans-serif; font-size: 1 rem;">Choose Your Building Materials</h4>
+        </div>
+        <div class="list-group container">
+            <div class="list-group-item ps-5 ms-5 me-5 pe-5 mt-5 mb-5">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3 mb-5 justify-content-end">
+
+    <!-- Card 1 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://freehindidesign.com/wp-content/uploads/2021/11/Ultratech-cement-bag-hd-image-png-file.webp"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">UltraTech Cement</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+                <img src="https://5.imimg.com/data5/SELLER/Default/2024/1/375195323/BO/TH/YG/123014326/acc-43-grade-cement-500x500.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">ACC Cement	</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+              <img src="https://5.imimg.com/data5/SELLER/Default/2025/5/514333609/CT/MM/LO/220276594/ambuja-ppc-cement-500x500.png"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Ambuja Cement	</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 4 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2022/7/UK/SM/XL/31589138/ramco-cement-ppc-bop-500x500.png"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Ramco Cement	</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2022/11/EL/OT/JG/49626400/43-grade-dalmia-cement-500x500.png"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Dalmia Cement	</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://www.birlawhite.com/images/product-category/white-cement/product/img-2.webp"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Birla Cement	</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 7 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://static.wixstatic.com/media/03a5e7_c353da5e018143e8a0481a28e1bd34c5~mv2.png/v1/fill/w_560,h_598,al_c,lg_1,q_85,enc_avif,quality_auto/03a5e7_c353da5e018143e8a0481a28e1bd34c5~mv2.png"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">JK Cement	</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2024/2/388737103/OX/CF/HY/692508/shree-cement-500x500.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Shree Cement	</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 1 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2025/4/503909193/WS/XE/SR/107834600/wire-cut-brick.png"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Wire Cut Bricks	</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+                <img src="https://content.jdmagicbox.com/quickquotes/images_main/chamber-brick-manufacturers-355388344-yw4f5.jpg?impolicy=queryparam&im=Resize=(360,360),aspect=fit"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Chamber Bricks</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+              <img src="https://media.istockphoto.com/id/184299701/photo/four-red-bricks-isolated-on-white.jpg?s=612x612&w=0&k=20&c=bNIKDLvArweg8z6OrlQOrP8uue3tpGMMtCxFH6vgd-Y="
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Country Bricks</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 4 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2022/3/PU/RW/HA/23172649/fly-ash-bricks-500x500.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Fly Ash Bricks	</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://media.istockphoto.com/id/184299701/photo/four-red-bricks-isolated-on-white.jpg?s=612x612&w=0&k=20&c=bNIKDLvArweg8z6OrlQOrP8uue3tpGMMtCxFH6vgd-Y="
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Clay Bricks	</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://media.istockphoto.com/id/1469358691/photo/construction-blocks-on-a-white-background-3d-illustration.jpg?s=612x612&w=0&k=20&c=zZK8g5OKheNAaU-PgOhIO-Bun9s8bhqrJO9juI-VWNM="
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Solid Concrete Blocks		</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 7 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://thumbs.dreamstime.com/b/concrete-hollow-blocks-construction-white-background-83257597.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Hollow Concrete Blocks		</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://media.istockphoto.com/id/1410452186/photo/foamed-lightweight-concrete-isolated-on-white.jpg?s=612x612&w=0&k=20&c=XCtmJhurwiNjjFAuFtvkfB62JEgfk0sv9B32Eq4xywI="
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">AAC Blocks	</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 1 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2024/11/464965877/GQ/XF/KI/134482041/construction-m-sand-500x500.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">M-Sand</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+                <img src="https://images.jdmagicbox.com/quickquotes/images_main/psand-2222955378-ctlqesoy.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">P-Sand</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+              <img src="https://www.growbusinessforsure.com/Product_images/product_images/construction_sand.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">River Sand		</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 4 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://img.freepik.com/premium-photo/sand-pits-isolated-transparent-background_1033130-11985.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Pit Sand</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://previews.123rf.com/images/teodora1/teodora11907/teodora1190700035/127668512-sand-heap-isolated-on-white-background.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Sea Sand		</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://media.istockphoto.com/id/1505310985/photo/pile-of-gravel-or-stone-for-construction-isolated-on-white-background-included-clipping-path.jpg?s=612x612&w=0&k=20&c=UaFJGyL_vx9X7jUzVSGy0iwyqhg_0ZFTbcskBkGCH0M="
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Crushed Stone Sand</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 7 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfhTCdH_C3u9hQ9v1gtHRm3DroNqEOr2Cn9iA5uU3L_AurXCJube46qh7ZP4pdJo7WaZA&usqp=CAU"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;padding:10px ;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Silica Sand		</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjXG3u862-KEl7e4kaStYNq0OSTo9x_qFsNSRoHTpY8YulMRFq-rEIL60_fpvAcBk31_E&usqp=CAU"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;padding:11px "
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Filling Sand	</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 1 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2023/5/307085246/CJ/GL/LJ/145405043/20mm-blue-metal-stone-500x500.png"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">6 mm Jalli</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+                <img src="https://content.jdmagicbox.com/comp/def_content/blue-metal-dealers/screenshot-2-blue-metal-dealers-2-h6dm5.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">12 mm Jalli</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK2RzW4sKkT3yBL69DZu-bOee-e4hk0KxNlTmYUiKBS-X28BoesxqFfIjjQUXGF6JXdXI&usqp=CAU"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">20 mm Jalli		</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 4 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgTcWNi9qNu78nt6Bsli_Vnorhzvs-jg2rQw&s"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">40 mm Jelly Stone</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://t4.ftcdn.net/jpg/01/72/82/33/360_F_172823321_7aDxS2BhLlObYuUdKNLnCtusUnhmDhMB.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Quarry Dust		</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwm9znFr47jKWvMg1NOFkrL5By22YWB5b4w&s"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Granite Chips	</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Card 7 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://www.shutterstock.com/image-photo/pale-crushed-stone-isolated-on-600nw-87960439.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;padding:10px ;"
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Basalt Crushed Stone			</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+     <div class="col d-flex justify-content-center">
+      <div class="card h-70 w-100 pt-5 pb-5 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+           onclick="showLoaderAndRedirect('home.html')"
+           style="padding-top: 2rem; padding-bottom: 1rem;">
+        <img src="https://static.vecteezy.com/system/resources/previews/039/555/903/non_2x/a-pile-of-rocks-on-a-white-background-photo.jpg"
+             class="w-auto"
+             style="height: 10rem; object-fit: contain; display: block; margin-left: auto; margin-right: auto;padding:11px "
+             alt="Cement Bag">
+        <div class="card-body text-center p-2">
+          <p class="card-title fw-semibold mb-0">Trap Rock Jalli	</p>
+        </div>
+      </div>
+    </div>
+
+    
+</div>
+  </div>
+  <div class="list-group container">
+    <div class="list-group-item ps-5 ms-5 pe-5 me-5 pt-0 pb-0 mt-0 mb-4 d-flex justify-content-center align-items-center" style="min-height: 60px;">
+      <p class="text-center mb-0">&copy; 2025 - OM Muruga Traders</p>
+    </div>
+  </div>
+</div>
+     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script> 
+<script>
+  // Mock KTApp for demonstration (remove if using real Metronic KTApp)
+  const KTApp = {
+    showPageLoading: () => {},
+    hidePageLoading: () => {}
+  };
+</script>
+
+<!-- JavaScript Logic -->
+ <script>
+      function showLoaderAndRedirect(url) {
+        const loadingEl = document.createElement("div");
+        loadingEl.classList.add("page-loader");
+        loadingEl.innerHTML = `
+          <span class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </span>
+        `;
+        document.body.append(loadingEl);
+        window.location.href = url;
+      }
+    </script>
+</body>
+</html>

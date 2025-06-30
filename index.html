@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cement Order Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the form */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        .container {
+            max-width: 960px; /* Max width for content */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            padding: 2.5rem; /* Generous padding */
+        }
+        .form-label {
+            font-weight: 600; /* Semi-bold labels */
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block; /* Ensure labels are block level */
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem; /* Adequate padding */
+            border: 1px solid #d1d5db; /* Light border */
+            border-radius: 0.5rem; /* Rounded input fields */
+            font-size: 1rem;
+            color: #374151;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #3b82f6; /* Blue border on focus */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* Soft blue shadow on focus */
+        }
+        .form-textarea {
+            min-height: 8rem; /* Tall enough for instructions */
+            resize: vertical; /* Allow vertical resizing */
+        }
+        .btn-primary {
+            background-color: #2563eb; /* Blue button */
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            display: block; /* Make button full width by default */
+            width: 100%; /* Full width */
+            text-align: center; /* Center text in button */
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8; /* Darker blue on hover */
+        }
+        .error-message {
+            color: #ef4444; /* Red for error messages */
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none; /* Hidden by default */
+        }
+        .success-message {
+            background-color: #d1fae5; /* Light green background */
+            color: #065f46; /* Dark green text */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+            display: none; /* Hidden by default */
+            text-align: center;
+            font-weight: 500;
+        }
+        .admin-panel {
+            background-color: #f3f4f6;
+            border: 1px dashed #d1d5db;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .qr-code-container {
+            text-align: center;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .qr-code-container img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Responsive adjustments for columns */
+        @media (min-width: 640px) { /* Small screens and up */
+            .grid-cols-1-sm-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 768px) { /* Medium screens and up */
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .btn-primary {
+                width: auto; /* Auto width on medium screens */
+                display: inline-block; /* Inline block on medium screens */
+            }
+        }
+         /* Basic styling for the custom message box */
+        .message-box {
+             position: fixed;
+             top: 1rem;
+             right: 1rem;
+             padding: 1rem;
+             border-radius: 0.5rem;
+             color: white;
+             font-weight: 600;
+             z-index: 1000;
+             transition: transform 0.3s ease-out;
+             transform: translateX(120%); /* Start off-screen */
+        }
+        .message-box.success {
+            background-color: #10b981; /* green-500 */
+        }
+        .message-box.error {
+            background-color: #ef4444; /* red-500 */
+        }
+         .message-box.info {
+            background-color: #3b82f6; /* blue-500 */
+        }
+         .message-box.show {
+            transform: translateX(0); /* Slide in */
+         }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex items-center justify-center min-h-screen" style="background-image: url('https://media1.giphy.com/media/2tNvsKkc0qFdNhJmKk/200w.gif');background-size: cover;">
+     <div class="message-box success hidden" id="messageBox">Message here</div>
+
+    <div class="container mx-auto">
+        <div class="card">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Cement Order Form</h1>
+            <p class="text-center text-gray-600 mb-8">Please fill in the details below to place your cement order.</p>
+
+             <div class="admin-panel mb-8">
+                 <h2 class="text-xl font-semibold text-gray-700 mb-4 cursor-pointer" id="adminPanelToggle">Admin Settings (Click to show/hide)</h2>
+                 <div id="adminSettingsContent" class="hidden space-y-4">
+                     <div class="mb-4">
+                         <label for="adminPassword" class="form-label">Admin Password:</label>
+                         <input type="password" id="adminPassword" class="form-input" placeholder="Enter password to unlock">
+                         <button id="unlockAdmin" class="btn-primary mt-2">Unlock</button>
+                     </div>
+
+                     <div id="buildingMaterialSection" class="hidden border-t border-gray-300 pt-4 mt-4">
+                         <h3 class="text-lg font-semibold text-gray-700 mb-3">Manage Building Materials</h3>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div>
+                                 <label for="adminMaterialName" class="form-label">Material Name:</label>
+                                 <input type="text" id="adminMaterialName" class="form-input" placeholder="e.g., UltraTech Cement">
+                             </div>
+                             <div>
+                                 <label for="adminMaterialPrice" class="form-label">Price (in INR):</label>
+                                 <input type="number" id="adminMaterialPrice" class="form-input" placeholder="e.g., 350.00" min="0" step="0.01">
+                             </div>
+                         </div>
+                         <button id="addMaterial" class="btn-primary mt-4">Add Material</button>
+
+                         <div class="mt-6">
+                             <h4 class="text-md font-semibold text-gray-700 mb-2">Available Materials:</h4>
+                             <ul id="materialList" class="space-y-2">
+                                 <!-- Materials will be rendered here by JavaScript -->
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+
+             <form id="cementOrderForm" class="space-y-6">
+                 <div class="border-b border-gray-200 pb-6 mb-6">
+                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Customer Information</h2>
+                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                         <div>
+                             <label for="customerName" class="form-label">1. Customer Name <span class="text-red-500">*</span></label>
+                             <input type="text" id="customerName" class="form-input" placeholder="Suresh Kumar" required>
+                             <p class="error-message" id="customerNameError">Customer name is required.</p>
+                         </div>
+                         <div>
+                             <label for="phoneNumber" class="form-label">2. Phone Number <span class="text-red-500">*</span></label>
+                             <input type="tel" id="phoneNumber" class="form-input" placeholder="+91-1234567890" required>
+                             <p class="error-message" id="phoneNumberError">Phone number is required.</p>
+                         </div>
+                         <div>
+                             <label for="email" class="form-label">3. Email (optional)</label>
+                             <input type="email" id="email" class="form-input" placeholder="suresh.kumar@example.com">
+                         </div>
+                     </div>
+                 </div>
+
+                 <div class="border-b border-gray-200 pb-6 mb-6">
+                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Delivery Details</h2>
+                     <div class="grid grid-cols-1 gap-6">
+                         <div>
+                             <label for="deliveryAddress" class="form-label">4. Delivery Address <span class="text-red-500">*</span></label>
+                             <textarea id="deliveryAddress" class="form-textarea" rows="3" placeholder="Door No, Street, City, PIN" required></textarea>
+                             <p class="error-message" id="deliveryAddressError">Delivery address is required.</p>
+                         </div>
+                         <div>
+                             <label for="deliveryDate" class="form-label">8. Delivery Date <span class="text-red-500">*</span></label>
+                             <input type="date" id="deliveryDate" class="form-input" required>
+                             <p class="error-message" id="deliveryDateError">Delivery date is required.</p>
+                         </div>
+                         <div>
+                             <label for="siteContactPerson" class="form-label">9. Site Contact Person (if different from buyer)</label>
+                             <input type="text" id="siteContactPerson" class="form-input" placeholder="Ravi Sharma">
+                         </div>
+                     </div>
+                 </div>
+
+                 <div class="border-b border-gray-200 pb-6 mb-6">
+                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Material Details</h2>
+                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                         <div>
+                             <label for="cementBrand" class="form-label">5. Material Name <span class="text-red-500">*</span></label>
+                             <select id="cementBrand" class="form-select" required>
+                                 <option value="">Select a Material</option>
+                                 <!-- Options will be populated by JavaScript -->
+                             </select>
+                             <p class="error-message" id="cementBrandError">Material is required.</p>
+                         </div>
+                         <div>
+                             <label for="quantity" class="form-label">6. Quantity <span class="text-red-500">*</span></label>
+                             <input type="number" id="quantity" class="form-input" placeholder="100" min="1" required>
+                             <p class="error-message" id="quantityError">Quantity is required and must be a positive number.</p>
+                         </div>
+                         <div>
+                             <label for="gradeType" class="form-label">7. Grade/Type (optional)</label>
+                             <input type="text" id="gradeType" class="form-input" placeholder="OPC 53 or Unit Type">
+                             <p class="error-message" id="gradeTypeError">Grade/Type is required.</p>
+                         </div>
+                     </div>
+                 </div>
+
+                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-center justify-between">
+                     <p class="text-lg font-semibold text-blue-800">Total Amount:</p>
+                     <p class="text-2xl font-bold text-blue-900" id="totalAmountDisplay">₹ 0.00</p>
+                 </div>
+
+                 <div class="border-b border-gray-200 pb-6 mb-6">
+                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Payment & Transport</h2>
+                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                         <div>
+                             <label for="paymentMode" class="form-label">10. Payment Mode <span class="text-red-500">*</span></label>
+                             <select id="paymentMode" class="form-select" required>
+                                 <option value="">Select Payment Mode</option>
+                                 <option value="Cash">Cash</option>
+                                 <option value="UPI">UPI</option>
+                                 <option value="Online Banking">Online Banking</option>
+                                 <option value="Credit Terms">Credit Terms</option>
+                             </select>
+                             <p class="error-message" id="paymentModeError">Payment mode is required.</p>
+                             <div id="upiPaymentOptions" class="hidden mt-4 p-4 border border-blue-200 rounded-lg bg-blue-50">
+                                 <div id="upiQrCodeContainer" class="qr-code-container">
+                                     <p class="text-gray-700 font-medium mb-2">Scan to Pay via UPI:</p>
+                                     <!-- This QR code is a placeholder. Replace 'SCAN+UPI' with your actual UPI data or a dynamically generated one -->
+                                     <img id="upiQrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCAN+UPI" alt="UPI QR Code" class="mx-auto">
+                                     <p class="text-sm text-gray-500 mt-2">*(Placeholder QR)*</p>
+                                     <button id="openUpiAppBtn" class="btn-primary mt-4 w-auto">Open UPI App</button>
+                                 </div>
+                                 <div id="customerPaidAmountInputGroup" class="mt-4">
+                                     <label for="customerPaidAmount" class="form-label">Amount Paid by Customer (manually enter after payment):</label>
+                                     <input type="number" id="customerPaidAmount" class="form-input" placeholder="Enter amount paid" min="0" step="0.01">
+                                     <p class="error-message" id="customerPaidAmountError">Please enter a valid amount paid.</p>
+                                     <button id="confirmUpiPaymentBtn" class="btn-primary mt-2 w-auto">Confirm UPI Payment</button>
+                                     <p class="text-sm text-gray-500 mt-1">Please enter the exact amount paid via UPI and click 'Confirm'.</p>
+                                 </div>
+                             </div>
+                         </div>
+                         <div>
+                             <label class="form-label">11. Transport Required? <span class="text-red-500">*</span></label>
+                             <div class="flex items-center space-x-4 mt-2">
+                                 <label class="flex items-center">
+                                     <input type="radio" name="transportRequired" value="Yes" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+                                     <span class="ml-2 text-gray-700">Yes</span>
+                                 </label>
+                                 <label class="flex items-center">
+                                     <input type="radio" name="transportRequired" value="No" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                     <span class="ml-2 text-gray-700">No</span>
+                                 </label>
+                             </div>
+                             <p class="error-message" id="transportRequiredError">Please select if transport is required.</p>
+                         </div>
+                     </div>
+                 </div>
+
+                 <div>
+                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Special Instructions</h2>
+                     <div>
+                         <label for="specialInstructions" class="form-label">12. Special Instructions</label>
+                         <textarea id="specialInstructions" class="form-textarea" rows="4" placeholder="Unloading time, access notes, material stacking request, etc."></textarea>
+                     </div>
+                 </div>
+
+                 <div class="text-center mt-8">
+                     <button type="submit" class="btn-primary">Submit Order</button>
+                 </div>
+             </form>
+
+              <div id="successMessage" class="success-message hidden">
+                 Your order has been submitted successfully! We will contact you shortly.
+             </div>
+
+             <div class="flex flex-col md:flex-row justify-center items-center mt-8 gap-4">
+                 <!-- Update links as needed -->
+                 <a href="Adminpanel.html" class="btn-primary bg-green-600 hover:bg-green-700 w-full md:w-auto text-center">Go to Admin Panel</a>
+                 <a href="Customerpanel.html" class="btn-primary bg-purple-600 hover:bg-purple-700 w-full md:w-auto text-center">Go to Customer Panel</a>
+             </div>
+         </div>
+     </div>
+
+     <script>
+         // Unique ID generator for orders and messages
+         function generateUniqueId() {
+             return 'uid-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+         }
+
+          // --- Custom Message Box ---
+         function showMessageBox(message, type = 'info', duration = 3000) {
+             const messageBox = document.getElementById('messageBox');
+             if (!messageBox) return; // Exit if element doesn't exist
+
+             messageBox.textContent = message;
+             messageBox.className = `message-box ${type}`; // Reset classes
+             messageBox.classList.add('show'); // Add show class to trigger animation
+
+             // Remove the message box after the specified duration
+             setTimeout(() => {
+                 messageBox.classList.remove('show');
+                 // Optional: Hide completely after transition ends
+                 messageBox.addEventListener('transitionend', function handler() {
+                     messageBox.classList.add('hidden');
+                     messageBox.removeEventListener('transitionend', handler);
+                 });
+             }, duration);
+         }
+
+
+         // --- Admin Panel Logic ---
+         // Basic admin setup for demonstration (replace with proper auth in production)
+         const ADMIN_PASSWORD = 'E@gle@321'; // Sensitive: In production, hash and store securely!
+
+         const BUILDING_MATERIALS_KEY = 'buildingMaterials'; // Key for building materials array
+
+         const adminPanelToggle = document.getElementById('adminPanelToggle');
+         const adminSettingsContent = document.getElementById('adminSettingsContent');
+         const adminPasswordInput = document.getElementById('adminPassword');
+         const unlockAdminBtn = document.getElementById('unlockAdmin');
+
+         const buildingMaterialSection = document.getElementById('buildingMaterialSection');
+         // Corrected IDs for admin material inputs
+         const adminMaterialNameInput = document.getElementById('adminMaterialName');
+         const adminMaterialPriceInput = document.getElementById('adminMaterialPrice');
+         const addMaterialBtn = document.getElementById('addMaterial');
+         const materialList = document.getElementById('materialList');
+
+         const cementBrandSelect = document.getElementById('cementBrand'); // Reference to the main form's material dropdown
+
+         let buildingMaterials = JSON.parse(localStorage.getItem(BUILDING_MATERIALS_KEY)) || [];
+
+         // Function to render building materials list in admin panel and populate the main form's dropdown
+         function renderBuildingMaterials() {
+             materialList.innerHTML = ''; // Clear existing list in admin panel
+             cementBrandSelect.innerHTML = '<option value="">Select a Material</option>'; // Clear existing options in form dropdown
+
+             if (buildingMaterials.length === 0) {
+                 const noMaterialLi = document.createElement('li');
+                 noMaterialLi.className = 'text-gray-500';
+                 noMaterialLi.textContent = 'No materials added yet.';
+                 materialList.appendChild(noMaterialLi);
+                 return;
+             }
+
+             // Populate admin panel list and main form dropdown
+             buildingMaterials.forEach((material, index) => {
+                 const li = document.createElement('li');
+                 li.className = 'flex justify-between items-center bg-gray-100 p-3 rounded-md shadow-sm';
+                 li.innerHTML = `
+                     <span class="text-gray-800 font-medium">${material.name}</span>
+                     <span class="text-gray-600">₹ ${parseFloat(material.price).toFixed(2)} / Unit</span>
+                     <button data-index="${index}" class="delete-material-btn bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded-full ml-4">Remove</button>
+                 `;
+                 materialList.appendChild(li);
+
+                 // Populate main form dropdown
+                 const option = document.createElement('option');
+                 option.value = material.name; // Store the material name as value
+                 option.dataset.price = material.price; // Store the price in a data attribute
+                 option.textContent = `${material.name} (₹${parseFloat(material.price).toFixed(2)})`;
+                 cementBrandSelect.appendChild(option);
+             });
+
+             // Add event listeners to new remove buttons
+             document.querySelectorAll('.delete-material-btn').forEach(button => {
+                 button.addEventListener('click', (event) => {
+                     const indexToRemove = parseInt(event.target.dataset.index);
+                     deleteMaterial(indexToRemove);
+                 });
+             });
+         }
+
+         // Function to delete a material
+         function deleteMaterial(index) {
+             if (index >= 0 && index < buildingMaterials.length) {
+                 const deletedMaterialName = buildingMaterials[index].name;
+                 buildingMaterials.splice(index, 1); // Remove the material
+                 localStorage.setItem(BUILDING_MATERIALS_KEY, JSON.stringify(buildingMaterials)); // Save updated list
+                 renderBuildingMaterials(); // Re-render the list and update dropdown
+
+                 // If the deleted material was selected in the form, reset it
+                 if (cementBrandSelect.value === deletedMaterialName) {
+                     cementBrandSelect.value = "";
+                 }
+
+                 updateTotalAmount(); // Recalculate total
+                 showMessageBox('Material removed successfully!', 'success');
+             }
+         }
+
+         // Toggle admin panel visibility
+         adminPanelToggle.addEventListener('click', () => {
+             adminSettingsContent.classList.toggle('hidden');
+         });
+
+         // Unlock admin panel
+         unlockAdminBtn.addEventListener('click', () => {
+             if (adminPasswordInput.value === ADMIN_PASSWORD) {
+                 buildingMaterialSection.classList.remove('hidden');
+                 adminPasswordInput.value = ''; // Clear password field
+                 showMessageBox('Admin panel unlocked!', 'success');
+             } else {
+                 showMessageBox('Incorrect password!', 'error');
+             }
+         });
+
+         // Add New Building Material
+         addMaterialBtn.addEventListener('click', () => {
+             const name = adminMaterialNameInput.value.trim(); // Use admin input ID
+             const price = parseFloat(adminMaterialPriceInput.value); // Use admin input ID
+
+             if (name === '') {
+                 showMessageBox('Material name cannot be empty.', 'error');
+                 return;
+             }
+             if (isNaN(price) || price <= 0) {
+                 showMessageBox('Please enter a valid positive number for the material price.', 'error');
+                 return;
+             }
+
+             // Check for duplicate material names (case-insensitive)
+             const isDuplicate = buildingMaterials.some(material => material.name.toLowerCase() === name.toLowerCase());
+             if (isDuplicate) {
+                 showMessageBox('Material with this name already exists. Please choose a different name.', 'error');
+                 return;
+             }
+
+             const newMaterial = { name: name, price: price };
+             buildingMaterials.push(newMaterial);
+             localStorage.setItem(BUILDING_MATERIALS_KEY, JSON.stringify(buildingMaterials)); // Save updated list
+             renderBuildingMaterials(); // Re-render the list and update dropdown
+
+             adminMaterialNameInput.value = ''; // Clear admin inputs
+             adminMaterialPriceInput.value = '';
+             showMessageBox('Building material added successfully!', 'success');
+         });
+
+         // Initialize admin panel display and render materials on page load
+         renderBuildingMaterials();
+
+         // --- Form Logic ---
+         const cementOrderForm = document.getElementById('cementOrderForm');
+         const paymentModeSelect = document.getElementById('paymentMode');
+         const upiPaymentOptions = document.getElementById('upiPaymentOptions');
+         const upiQrCode = document.getElementById('upiQrCode');
+         const openUpiAppBtn = document.getElementById('openUpiAppBtn');
+         const customerPaidAmountInputGroup = document.getElementById('customerPaidAmountInputGroup');
+         const customerPaidAmountInput = document.getElementById('customerPaidAmount');
+         const confirmUpiPaymentBtn = document.getElementById('confirmUpiPaymentBtn');
+
+         const quantityInput = document.getElementById('quantity');
+         const totalAmountDisplay = document.getElementById('totalAmountDisplay');
+
+         let currentOrderId = null; // To store the ID of the order being placed for UPI payment confirmation
+
+         // Function to update the total amount display based on selected material and quantity
+         function updateTotalAmount() {
+             const quantity = parseInt(quantityInput.value);
+             const selectedOption = cementBrandSelect.options[cementBrandSelect.selectedIndex];
+             // Get price from the data attribute of the selected option
+             const materialPrice = selectedOption && selectedOption.dataset.price ? parseFloat(selectedOption.dataset.price) : 0;
+
+             let total = 0;
+             if (!isNaN(quantity) && quantity > 0 && !isNaN(materialPrice) && materialPrice > 0) {
+                 total = quantity * materialPrice;
+             }
+             totalAmountDisplay.textContent = `₹ ${total.toFixed(2)}`;
+
+             // Update QR code and UPI deep link with the current total amount if UPI is selected
+             if (paymentModeSelect.value === 'UPI') {
+                 updateUpiDetails(total);
+             }
+         }
+
+         // Function to update UPI QR code and deep link
+         function updateUpiDetails(amount) {
+             // IMPORTANT: Replace with your actual UPI ID and business name for production
+             const payeeVPA = 'your_upi_id@bank'; // e.g., yourcompany@paytm, yourname@oksbi
+             const payeeName = 'Your Business Name'; // e.g., Your Cement Store
+
+             // Basic UPI Deep Link structure - enhance for production
+             const transactionRef = `ORDER_REF_${currentOrderId || Date.now()}`; // Use order ID if available, otherwise timestamp
+
+             const upiDeepLink = `upi://pay?pa=${payeeVPA}&pn=${encodeURIComponent(payeeName)}&am=${amount.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Cement Order Payment')}&tr=${transactionRef}`;
+
+             // Generate QR code URL using a public API (e.g., goqr.me or similar)
+             const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiDeepLink)}`;
+             upiQrCode.src = qrCodeApiUrl;
+
+             // Set the href for the "Open UPI App" button
+             openUpiAppBtn.onclick = () => {
+                 window.location.href = upiDeepLink;
+             };
+         }
+
+
+         // Event listener for payment mode change
+         paymentModeSelect.addEventListener('change', function() {
+             if (this.value === 'UPI') {
+                 upiPaymentOptions.classList.remove('hidden');
+                 customerPaidAmountInputGroup.classList.remove('hidden'); // Show paid amount input
+                 updateUpiDetails(parseFloat(totalAmountDisplay.textContent.replace('₹ ', '')) || 0);
+             } else {
+                 upiPaymentOptions.classList.add('hidden');
+                 customerPaidAmountInputGroup.classList.add('hidden'); // Hide paid amount input
+                 // Clear paid amount when switching off UPI
+                 customerPaidAmountInput.value = '';
+             }
+         });
+
+         // Event listener for quantity input change and material selection change
+         quantityInput.addEventListener('input', updateTotalAmount);
+         cementBrandSelect.addEventListener('change', updateTotalAmount);
+
+         // Initial update of total amount on page load
+         document.addEventListener('DOMContentLoaded', () => {
+             renderBuildingMaterials(); // Ensure materials are loaded and dropdown populated first
+             updateTotalAmount();
+         });
+
+
+         // Event listener for Confirm UPI Payment button
+         confirmUpiPaymentBtn.addEventListener('click', () => {
+             const paidAmount = parseFloat(customerPaidAmountInput.value);
+             const totalAmount = parseFloat(totalAmountDisplay.textContent.replace('₹ ', ''));
+
+             if (isNaN(paidAmount) || paidAmount < 0) {
+                 showMessageBox('Payment Error', 'Please enter a valid amount you paid.', 'error');
+                 return;
+             }
+
+             // Allow paid amount to be greater than total, but show a warning
+             if (paidAmount > totalAmount) {
+                  showMessageBox('Warning', 'Amount paid is greater than the total order amount. Please confirm payment details.', 'warning');
+             }
+
+
+             if (currentOrderId) { // Check if an order ID is set from submission
+                 let orders = JSON.parse(localStorage.getItem('cementOrders')) || [];
+                 const orderIndex = orders.findIndex(order => order.id === currentOrderId);
+
+                 if (orderIndex !== -1) {
+                     orders[orderIndex].customerPaidAmount = paidAmount;
+                     // Update payment status based on total and paid amount
+                     orders[orderIndex].paymentStatus = paidAmount >= totalAmount ? 'Paid' : (paidAmount > 0 ? 'Partially Paid' : 'Unpaid');
+
+                     localStorage.setItem('cementOrders', JSON.stringify(orders));
+                     showMessageBox('Payment Confirmed', `Recorded ₹${paidAmount.toFixed(2)} as paid for Order ID: ${currentOrderId.substring(0, 8)}... Status: ${orders[orderIndex].paymentStatus}`, 'success');
+
+                     // Clear the paid amount input after confirmation
+                     // customerPaidAmountInput.value = ''; // Keep value so user sees what they entered
+                     // You might want to disable the button or show a 'payment confirmed' state
+                 } else {
+                     showMessageBox('Error', 'Order not found for updating payment status. Please submit the order first.', 'error');
+                 }
+             } else {
+                 showMessageBox('Error', 'No active order to confirm payment for. Please submit an order first.', 'error');
+             }
+         });
+
+
+         // --- Form Submission and Validation ---
+         cementOrderForm.addEventListener('submit', function(event) {
+             event.preventDefault(); // Prevent default form submission
+
+             let isValid = true;
+
+             // Helper function to show/hide error messages
+             function showError(id, message) {
+                 const errorElement = document.getElementById(id + 'Error');
+                 if (errorElement) {
+                     errorElement.textContent = message;
+                     errorElement.style.display = 'block';
+                 }
+             }
+
+             function hideError(id) {
+                 const errorElement = document.getElementById(id + 'Error');
+                 if (errorElement) {
+                     errorElement.style.display = 'none';
+                 }
+             }
+
+             // Validate Customer Name
+             const customerNameInput = document.getElementById('customerName');
+             if (customerNameInput.value.trim() === '') {
+                 showError('customerName', 'Customer name is required.');
+                 isValid = false;
+             } else {
+                 hideError('customerName');
+             }
+
+             // Validate Phone Number
+             const phoneNumberInput = document.getElementById('phoneNumber');
+             // Basic regex for Indian phone numbers (10 digits, starts with 6-9)
+             const phoneRegex = /^[6-9]\d{9}$/;
+             if (phoneNumberInput.value.trim() === '') {
+                 showError('phoneNumber', 'Phone number is required.');
+                 isValid = false;
+             } else if (!phoneRegex.test(phoneNumberInput.value.trim())) {
+                 showError('phoneNumber', 'Please enter a valid 10-digit Indian phone number (starts with 6-9).');
+                 isValid = false;
+             }
+             else {
+                 hideError('phoneNumber');
+             }
+
+             // Validate Delivery Address
+             const deliveryAddressInput = document.getElementById('deliveryAddress');
+             if (deliveryAddressInput.value.trim() === '') {
+                 showError('deliveryAddress', 'Delivery address is required.');
+                 isValid = false;
+             } else {
+                 hideError('deliveryAddress');
+             }
+
+             // Validate Delivery Date
+             const deliveryDateInput = document.getElementById('deliveryDate');
+             if (deliveryDateInput.value === '') {
+                 showError('deliveryDate', 'Delivery date is required.');
+                 isValid = false;
+             } else {
+                 const selectedDate = new Date(deliveryDateInput.value);
+                 const today = new Date();
+                 today.setHours(0, 0, 0, 0); // Reset time to compare dates only
+                 if (selectedDate < today) {
+                     showError('deliveryDate', 'Delivery date cannot be in the past.');
+                     isValid = false;
+                 } else {
+                     hideError('deliveryDate');
+                 }
+             }
+
+             // Validate Material Selection (previously Cement Brand)
+             const selectedMaterialName = cementBrandSelect.value;
+             const selectedMaterialOption = cementBrandSelect.options[cementBrandSelect.selectedIndex];
+             const materialPricePerUnit = selectedMaterialOption && selectedMaterialOption.dataset.price ? parseFloat(selectedMaterialOption.dataset.price) : 0;
+
+
+             if (selectedMaterialName === '' || isNaN(materialPricePerUnit) || materialPricePerUnit <= 0) {
+                  // Check if any material is selected AND if the selected material has a valid price
+                 showError('cementBrand', 'Please select a material with a valid price.');
+                 isValid = false;
+             } else {
+                 hideError('cementBrand');
+             }
+
+             // Validate Quantity
+             const quantityInputValidated = document.getElementById('quantity');
+             const quantity = parseInt(quantityInputValidated.value);
+             if (quantityInputValidated.value.trim() === '' || isNaN(quantity) || quantity <= 0) {
+                 showError('quantity', 'Quantity is required and must be a positive number.');
+                 isValid = false;
+             } else {
+                 hideError('quantity');
+             }
+
+              // Validate Grade/Type - making it non-required based on the second code's label
+              // const gradeTypeInput = document.getElementById('gradeType');
+              // if (gradeTypeInput.value.trim() === '') {
+              //    showError('gradeType', 'Grade/Type is required.'); // Removed requirement check
+              //    isValid = false;
+              // } else {
+              //    hideError('gradeType');
+              // }
+              hideError('gradeType'); // Always hide if not required for validation
+
+             // Validate Payment Mode
+             const paymentModeInput = document.getElementById('paymentMode');
+             if (paymentModeInput.value === '') {
+                 showError('paymentMode', 'Payment mode is required.');
+                 isValid = false;
+             } else {
+                 hideError('paymentMode');
+             }
+
+             // Validate Transport Required
+             const transportRequiredRadios = document.getElementsByName('transportRequired');
+             let isTransportSelected = false;
+             let transportValue = '';
+             for (const radio of transportRequiredRadios) {
+                 if (radio.checked) {
+                     isTransportSelected = true;
+                     transportValue = radio.value;
+                     break;
+                 }
+             }
+             if (!isTransportSelected) {
+                 showError('transportRequired', 'Please select if transport is required.');
+                 isValid = false;
+             } else {
+                 hideError('transportRequired');
+             }
+
+             // Get the calculated total amount from the display
+             const totalAmount = parseFloat(totalAmountDisplay.textContent.replace('₹ ', ''));
+             let customerPaidAmount = 0; // Default to 0
+
+             // If UPI is selected, get the manually entered paid amount
+             if (paymentModeInput.value === 'UPI') {
+                 customerPaidAmount = parseFloat(customerPaidAmountInput.value);
+                  // If UPI is selected, the paid amount input is required, even if 0 is entered initially
+                 if (customerPaidAmountInput.value.trim() === '' || isNaN(customerPaidAmount) || customerPaidAmount < 0) {
+                     showError('customerPaidAmount', 'Please enter the amount paid (can be 0 initially).');
+                     isValid = false;
+                 } else {
+                      hideError('customerPaidAmount');
+                 }
+             } else {
+                 // If not UPI, ensure the paid amount input is cleared and error hidden
+                 customerPaidAmountInput.value = '';
+                 hideError('customerPaidAmount');
+             }
+
+
+             if (isValid) {
+                 const newOrder = {
+                     id: generateUniqueId(), // Unique ID for the order
+                     customerName: customerNameInput.value.trim(),
+                     phoneNumber: phoneNumberInput.value.trim(),
+                     email: document.getElementById('email').value.trim(),
+                     deliveryAddress: deliveryAddressInput.value.trim(),
+                     materialName: selectedMaterialName, // Use the selected material name
+                     materialPricePerUnit: materialPricePerUnit, // Use the price from the data attribute
+                     quantity: quantity, // Use the parsed integer quantity
+                     gradeType: document.getElementById('gradeType').value.trim(),
+                     deliveryDate: deliveryDateInput.value,
+                     siteContactPerson: document.getElementById('siteContactPerson').value.trim(),
+                     paymentMode: paymentModeInput.value,
+                     transportRequired: transportValue, // Use the checked radio value
+                     specialInstructions: document.getElementById('specialInstructions').value.trim(),
+                     totalAmount: totalAmount, // Use the calculated total
+                     customerPaidAmount: customerPaidAmount, // Use the entered paid amount
+                     // Determine initial payment status based on manual input at time of order
+                     paymentStatus: (paymentModeInput.value === 'UPI' && customerPaidAmount >= totalAmount && totalAmount > 0) ? 'Paid' : (customerPaidAmount > 0 ? 'Partially Paid' : 'Unpaid'),
+                     orderDate: new Date().toISOString(), // Timestamp of order creation
+                     status: 'Pending' // Initial status of the order (can be separate from payment status)
+                 };
+
+                 // Set the currentOrderId for subsequent UPI payment confirmation (if applicable)
+                 currentOrderId = newOrder.id;
+
+                 // Retrieve existing orders from localStorage
+                 let orders = [];
+                 try {
+                     orders = JSON.parse(localStorage.getItem('cementOrders')) || [];
+                     if (!Array.isArray(orders)) { // Ensure it's an array
+                         console.warn("localStorage 'cementOrders' was not an array, resetting.");
+                         orders = [];
+                     }
+                 } catch (e) {
+                     console.error("Error parsing cementOrders from localStorage:", e);
+                     orders = [];
+                 }
+
+                 // Add the new order
+                 orders.push(newOrder);
+                 localStorage.setItem('cementOrders', JSON.stringify(orders));
+                 console.log('New Order Submitted and Stored:', newOrder);
+
+                 // Clear form fields and show success message
+                 cementOrderForm.reset();
+                 // Re-render materials list and update dropdown after reset
+                 renderBuildingMaterials(); // This also resets the dropdown
+                 // Hide UPI options after successful submission
+                 upiPaymentOptions.classList.add('hidden');
+                 customerPaidAmountInputGroup.classList.add('hidden');
+                 customerPaidAmountInput.value = ''; // Ensure input is clear
+
+                 showMessageBox('Your order has been submitted successfully!', 'success');
+
+
+                 // Recalculate total amount after reset (will be 0)
+                 updateTotalAmount(); // This will set totalAmountDisplay to ₹ 0.00
+
+
+                 // Optional: Redirect after a delay if needed, but the second code didn't do this
+                 // setTimeout(() => {
+                 //     window.location.href = 'Adminpanel.html';
+                 // }, 2000); // Example redirect after 2 seconds
+
+             } else {
+                  showMessageBox('Validation Error', 'Please fix the errors above.', 'error');
+             }
+         });
+
+         // Add input event listeners to clear errors on typing
+         const inputs = ['customerName', 'phoneNumber', 'deliveryAddress', 'deliveryDate', 'quantity', 'paymentMode', 'customerPaidAmount', 'cementBrand']; // Added cementBrand
+         inputs.forEach(id => {
+             const element = document.getElementById(id);
+             if (element) {
+                 element.addEventListener('input', () => hideError(id));
+                 element.addEventListener('change', () => hideError(id)); // Also listen for change on selects/dates
+             }
+         });
+
+         // Special handling for radio buttons
+         document.getElementsByName('transportRequired').forEach(radio => {
+             radio.addEventListener('change', () => hideError('transportRequired'));
+         });
+
+          // Persist phone number input
+          document.addEventListener('DOMContentLoaded', function() {
+              const phoneInput = document.getElementById('phoneNumber');
+              const storedPhone = localStorage.getItem('customerPhoneNumber');
+              if (storedPhone) {
+                  phoneInput.value = storedPhone;
+              }
+              phoneInput.addEventListener('input', function() {
+                  localStorage.setItem('customerPhoneNumber', phoneInput.value);
+              });
+          });
+
+
+         // Listen for changes in localStorage from other tabs/windows
+         window.addEventListener('storage', (event) => {
+             if (event.key === 'buildingMaterials') {
+                 // If building materials change in another tab, update the list and dropdown
+                 buildingMaterials = JSON.parse(event.newValue) || [];
+                 renderBuildingMaterials();
+                 updateTotalAmount(); // Recalculate total in case the selected material price changed
+             }
+             // You could also listen for 'cementOrders' if this page should react to orders being added elsewhere,
+             // but typically the form page only adds orders.
+         });
+
+     </script>
+ </body>
+ </html>

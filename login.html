@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Login</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base body styles, using Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+
+        /* Custom CSS for the full-page Loading Overlay */
+        .loading-overlay {
+            position: fixed; /* Fixes it to the viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensures it's on top of all other content */
+            transition: opacity 0.3s ease-in-out; /* Smooth fade in/out effect */
+            opacity: 0; /* Initially hidden */
+            pointer-events: none; /* Allows clicks/interactions through when hidden */
+        }
+
+        /* Class to make the loading overlay visible */
+        .loading-overlay.visible {
+            opacity: 1; /* Fully opaque */
+            pointer-events: auto; /* Disables clicks/interactions when visible */
+        }
+
+        /* Spinner animation styles */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1); /* Light gray border */
+            border-left-color: #6366f1; /* Tailwind indigo-500 color for the spinning part */
+            border-radius: 50%; /* Makes it a circle */
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite; /* Apply spin animation */
+        }
+
+        /* Keyframe animation for the spinner */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg); /* Rotates the spinner 360 degrees */
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4" style="background-image: url('https://media1.giphy.com/media/2tNvsKkc0qFdNhJmKk/200w.gif');background-size: cover;" >
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <!-- Company Logo and Name Section -->
+        <div class="text-center mb-8">
+            <img src="IMG-20250614-WA0001.jpg"
+                 onerror="this.onerror=null;this.src='https://placehold.co/45x45/cccccc/white?text=OMT';"
+                 class="h-16 w-16 mx-auto mb-4 rounded-full block"
+                 alt="Company Logo for OM Muruga Traders"
+                 width="45"
+                 height="45">
+            <h1 class="text-3xl font-bold text-gray-800">OM MURUGA TRADERS</h1>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <!-- Email or Phone Number Input Field -->
+            <div>
+                <label for="emailOrPhone" class="block text-sm font-medium text-gray-700 mb-1">Email or Phone Number</label>
+                <input
+                    type="text"
+                    id="emailOrPhone"
+                    name="emailOrPhone"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="e.g., user@gmail.com or 1234567890"
+                    required
+                >
+                <p id="emailPhoneError" class="mt-2 text-sm text-red-600 hidden">
+                    Please enter a valid 10-digit phone number or a @gmail.com email.
+                </p>
+            </div>
+
+            <!-- Password Input Field with Toggle -->
+            <div class="relative">
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
+                    placeholder="Enter your password"
+                    required
+                >
+                <!-- Password Visibility Toggle Button -->
+                <button
+                    type="button"
+                    id="togglePassword"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center pt-8 text-gray-500 hover:text-gray-700 focus:outline-none"
+                    aria-label="Toggle password visibility"
+                >
+                    <!-- Eye open SVG icon -->
+                    <svg id="eyeOpen" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    <!-- Eye closed SVG icon (initially hidden) -->
+                    <svg id="eyeClosed" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 .96-3.09 3.09-5.462 5.56-6.811m6.298-1.577A9.954 9.954 0 0112 5c4.478 0 8.268 2.943 9.542 7-.068.275-.145.542-.232.802M15 12a3 3 0 11-6 0 3 3 0 016 0zm-3 7v-1.5M4.5 7.5L5.25 9m13.5 0l.75-1.5M12 10.5V9m-3 1.5H7.5m3 0H12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Submit Button (Log In) -->
+            <div>
+                <button
+                    type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                >
+                    Log In
+                </button>
+            </div>
+        </form>
+
+        <!-- Register Hyperlink -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Don't have an account?
+                <a href="register.html" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    Register here
+                </a>
+            </p>
+        </div>
+        
+
+        <!-- Message Box for Login Status/Errors -->
+        <div id="messageBox" class="mt-6 p-3 rounded-md text-sm text-center hidden" role="alert"></div>
+    </div>
+
+    <!-- Loading Overlay HTML: This element will cover the entire page -->
+    <!-- Initially add 'visible' class so it shows immediately when the page starts loading -->
+    <div id="loadingOverlay" class="loading-overlay visible">
+        <div class="spinner"></div> <!-- The spinning animation -->
+    </div>
+
+    <script>
+        // Ensure the DOM is fully loaded before trying to access elements
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get references to all necessary DOM elements
+            const emailOrPhoneInput = document.getElementById('emailOrPhone');
+            const passwordInput = document.getElementById('password');
+            const togglePasswordButton = document.getElementById('togglePassword');
+            const eyeOpenIcon = document.getElementById('eyeOpen');
+            const eyeClosedIcon = document.getElementById('eyeClosed');
+            const loginForm = document.getElementById('loginForm');
+            const emailPhoneError = document.getElementById('emailPhoneError');
+            const messageBox = document.getElementById('messageBox');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            /**
+             * @function showMessage
+             * @description Displays a message in the message box element and applies styling.
+             * Automatically hides the loading overlay after showing the message.
+             * @param {string} message - The text message to display.
+             * @param {'success' | 'error'} type - The type of message, determines CSS classes.
+             */
+            const showMessage = (message, type = 'success') => {
+                messageBox.textContent = message; // Set message text
+                // Remove previous styling classes
+                messageBox.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+                // Apply new styling based on message type
+                if (type === 'success') {
+                    messageBox.classList.add('bg-green-100', 'text-green-800');
+                } else {
+                    messageBox.classList.add('bg-red-100', 'text-red-800');
+                }
+                hideLoading(); // Always hide loading after a message is displayed
+            };
+
+            /**
+             * @function showLoading
+             * @description Makes the full-page loading overlay visible by adding the 'visible' class.
+             */
+            const showLoading = () => {
+                loadingOverlay.classList.add('visible');
+            };
+
+            /**
+             * @function hideLoading
+             * @description Hides the full-page loading overlay by removing the 'visible' class.
+             */
+            const hideLoading = () => {
+                loadingOverlay.classList.remove('visible');
+            };
+
+            // --- Initial Page Load Handling ---
+            // This event listener fires when the entire page (including all images, scripts, CSS)
+            // has finished loading. This is ideal for hiding the initial loading spinner.
+            window.addEventListener('load', () => {
+                hideLoading(); // Hide the loading overlay after the entire page is fully loaded
+            });
+
+            // Input validation for Email or Phone Number field
+            emailOrPhoneInput.addEventListener('input', () => {
+                const value = emailOrPhoneInput.value.trim();
+                // Regular expressions for email and phone number validation
+                const isEmail = /^[^@]+@gmail\.com$/.test(value);
+                const isPhoneNumber = /^\d{10}$/.test(value);
+
+                // Show/hide error message and apply border styling based on validation
+                if (value === '') {
+                    emailPhoneError.classList.add('hidden');
+                    emailOrPhoneInput.classList.remove('border-red-500', 'border-green-500');
+                } else if (!isEmail && !isPhoneNumber) {
+                    emailPhoneError.classList.remove('hidden');
+                    emailOrPhoneInput.classList.add('border-red-500');
+                    emailOrPhoneInput.classList.remove('border-green-500');
+                } else {
+                    emailPhoneError.classList.add('hidden');
+                    emailOrPhoneInput.classList.remove('border-red-500');
+                    emailOrPhoneInput.classList.add('border-green-500');
+                }
+            });
+
+            // Toggle password visibility functionality
+            togglePasswordButton.addEventListener('click', () => {
+                // Change input type between 'password' and 'text'
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                // Toggle eye icons visibility
+                eyeOpenIcon.classList.toggle('hidden');
+                eyeClosedIcon.classList.toggle('hidden');
+            });
+
+            // Handle form submission
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevent the default form submission behavior (page reload)
+
+                showLoading(); // Show the full-page loading overlay immediately upon form submission
+
+                const emailOrPhone = emailOrPhoneInput.value.trim();
+                const password = passwordInput.value;
+
+                // Client-side validation before proceeding with login logic
+                if (!emailOrPhone || (!/^[^@]+@gmail\.com$/.test(emailOrPhone) && !/^\d{10}$/.test(emailOrPhone))) {
+                    showMessage("Please enter a valid 10-digit phone number or a @gmail.com email.", 'error');
+                    emailOrPhoneInput.focus();
+                    return; // Stop execution if validation fails
+                }
+
+                if (!password) {
+                    showMessage("Please enter your password.", 'error');
+                    passwordInput.focus();
+                    return; // Stop execution if validation fails
+                }
+
+                // --- Authenticate with localStorage (Simulated Login) ---
+                let users = [];
+                try {
+                    const storedUsers = localStorage.getItem('users');
+                    if (storedUsers) {
+                        users = JSON.parse(storedUsers);
+                        // Ensure 'users' is an array, reset if not
+                        if (!Array.isArray(users)) {
+                            users = [];
+                        }
+                    }
+                } catch (e) {
+                    // Log error if parsing fails, and reset users array
+                    console.error('Error parsing users from localStorage:', e);
+                    users = [];
+                }
+
+                // Find a matching user in the stored data
+                const foundUser = users.find(user => user.emailOrPhone === emailOrPhone && user.password === password);
+
+                if (foundUser) {
+                    showMessage("Login successful! Redirecting...", 'success');
+                    console.log('Login attempt:', { emailOrPhone, password });
+                    // Redirect to dashboard.html after a short delay
+                    // The loading spinner will remain visible during this delay
+                    setTimeout(() => {
+                        window.location.href = 'index.html'; // Make sure 'dashboard.html' exists for successful redirection
+                    }, 1500); // 1.5 second delay
+                } else {
+                    // Show error message if login fails. showMessage will hide the loading spinner.
+                    showMessage("Invalid email/phone or password. Please try again.", 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

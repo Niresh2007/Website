@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Muruga Traders</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the Poppins font and general body styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Use Tailwind classes in the <body> tag for background and text color */
+        }
+
+        /* Loading overlay styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Ensure it's on top of everything */
+            opacity: 0; /* Initially hidden */
+            visibility: hidden; /* Initially hidden */
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Spinner animation */
+        .spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Main Hero Section with background image and overlay -->
+    <section class="relative bg-[url('https://cdn.globalso.com/goldenpowerfj/Fiber_20Cement_20Siding_20That_20Looks_20LIke_20Wood_203-11.png')] bg-cover bg-center bg-no-repeat min-h-screen md:min-h-[70vh] flex flex-col">
+        <!-- Overlay for better text readability -->
+        <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
+
+        <!-- Navbar -->
+        <nav class="relative z-10 bg-gray-800 bg-opacity-70 text-white py-4 px-4 md:px-8">
+            <div class="container mx-auto flex items-center justify-between">
+                <!-- Logo and Company Name -->
+                <div class="flex items-center">
+                    <img src="IMG-20250614-WA0001.jpg"
+                        onerror="this.onerror=null;this.src='https://placehold.co/40x40/cccccc/white?text=Traders';"
+                        class="w-12 h-12 rounded-full mr-3 object-cover shadow-md"
+                        alt="Company Logo">
+                    <h4 class="text-xl md:text-2xl font-bold">OM MURUGA TRADERS</h4>
+                </div>
+                <!-- Admin Login Button (responsive for mobile) -->
+                <button id="admin" class="px-4 py-2 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition duration-300 ease-in-out text-sm md:text-base whitespace-nowrap">
+                    Admin Login
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 flex flex-grow items-center justify-center text-center px-4 py-12">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-white leading-tight mb-4 inline">
+                    OM Muruga Traders Precision Building Materials, Delivered
+                    <br class="hidden sm:inline">
+                    <span class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-white leading-tight mb-4 inline-block">Fast</span>
+                </h1>
+                </h1>
+
+                <p class="mt-6 mb-2 px-3 text-lg sm:text-xl text-gray-300 leading-relaxed">
+Choose your materials, including cement, bricks, sand, and steel, and select your preferred brand. OM Muruga Traders will deliver high-quality building materials directly to your construction site.                </p>
+
+                <!-- Place Order Button with SVG arrow icon -->
+                <button id="order" class="inline-flex items-center justify-center gap-2 px-8 py-4 mt-8 bg-blue-600 text-white font-bold rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    Place Order
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Decorative Image/Separator -->
+    <img class="w-full h-auto object-cover mt-0 pt-0" src="design.png" alt="Decorative Design">
+
+    <!-- Why Choose OM Muruga Traders Section -->
+    <div class="container mx-auto px-4 py-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Why Choose OM Muruga Traders?</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            <!-- Card 1: Custom Sizing -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transition duration-300 ease-in-out hover:shadow-xl w-full max-w-sm">
+                <span class="text-5xl mb-4">☑</span>
+                <h5 class="text-2xl font-semibold mb-2">Custom Sizing</h5>
+                <p class="text-gray-600">Cement and bricks tailored to your project for a perfect fit and less waste.</p>
+            </div>
+            <!-- Card 2: Assured Quality -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transition duration-300 ease-in-out hover:shadow-xl w-full max-w-sm">
+                <span class="text-5xl mb-4">⛨</span>
+                <h5 class="text-2xl font-semibold mb-2">Assured Quality</h5>
+                <p class="text-gray-600">Certified, quality-checked cement and bricks every time.</p>
+            </div>
+            <!-- Card 3: Rapid Delivery -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transition duration-300 ease-in-out hover:shadow-xl w-full max-w-sm">
+                <span class="text-5xl mb-4">⛟</span>
+                <h5 class="text-2xl font-semibold mb-2">Rapid Delivery</h5>
+                <p class="text-gray-600">Fast, safe delivery to your site in 3-5 days.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="bg-[url('https://media1.giphy.com/media/2tNvsKkc0qFdNhJmKk/200w.gif')] bg-cover bg-center py-8 sm:py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center text-white mb-12">How It Works</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+                <!-- Step 1 Card -->
+                <div class="flex flex-col items-center text-center w-full max-w-sm">
+                    <img src="https://placehold.co/60x60/FFFFFF/blue?text=1"
+                        onerror="this.onerror=null;this.src='https://placehold.co/60x60/cccccc/white?text=Step';"
+                        class="w-16 h-16 rounded-full mb-4 object-cover shadow-md"
+                        alt="Step 1 Icon">
+                    <h5 class="text-2xl font-semibold mb-2 text-white">Choose Material</h5>
+                    <p class="text-gray-100">Select your required building materials like cement, bricks, and sand from our catalog.</p>
+                </div>
+                <!-- Step 2 Card -->
+                <div class="flex flex-col items-center text-center w-full max-w-sm">
+                    <img src="https://placehold.co/60x60/FFFFFF/blue?text=2"
+                        onerror="this.onerror=null;this.src='https://placehold.co/60x60/cccccc/white?text=Step';"
+                        class="w-16 h-16 rounded-full mb-4 object-cover shadow-md"
+                        alt="Step 2 Icon">
+                    <h5 class="text-2xl font-semibold mb-2 text-white">Place Order</h5>
+                    <p class="text-gray-100">Easily place your order online with your specifications and quantity requirements.</p>
+                </div>
+                <!-- Step 3 Card -->
+                <div class="flex flex-col items-center text-center w-full max-w-sm">
+                    <img src="https://placehold.co/60x60/FFFFFF/blue?text=3"
+                        onerror="this.onerror=null;this.src='https://placehold.co/60x60/cccccc/white?text=Step';"
+                        class="w-16 h-16 rounded-full mb-4 object-cover shadow-md"
+                        alt="Step 3 Icon">
+                    <h5 class="text-2xl font-semibold mb-2 text-white">Receive Delivery</h5>
+                    <p class="text-gray-100">Get your high-precision building materials delivered directly to your construction site.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Building Materials Section -->
+    <div class="container mx-auto px-4 py-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Building Materials</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 justify-items-center">
+            <!-- Material 1: Cement -->
+            <div class="p-4 flex flex-col items-center">
+                <img src="https://spkinfra.in/wp-content/uploads/2023/11/Untitled-removebg-preview.png"
+                    class="w-auto h-48 object-contain mb-2"
+                    alt="Cement Bag">
+                <p class="text-lg font-semibold text-center">Cement</p>
+            </div>
+            <!-- Material 2: Bricks -->
+            <div class="p-4 flex flex-col items-center">
+                <img src="https://png.pngtree.com/png-clipart/20250124/original/pngtree-a-pile-of-bricks-png-image_19767465.png"
+                    class="w-auto h-48 object-contain mb-2"
+                    alt="Pile of Bricks">
+                <p class="text-lg font-semibold text-center">Bricks</p>
+            </div>
+            <!-- Material 3: Sand -->
+            <div class="p-4 flex flex-col items-center">
+                <img src="https://www.alphasand.in/AlphaUploadImages/3webp_96909.webp"
+                    class="w-auto h-48 object-contain mb-2"
+                    alt="Pile of Sand">
+                <p class="text-lg font-semibold text-center">Sand</p>
+            </div>
+            <!-- Material 4: Steel Rods (Example addition) -->
+            
+            <div class="p-4 flex flex-col items-center">
+                <img src="https://img.freepik.com/premium-photo/reinforcing-steel-bars-building-armature-isolated-white-background_104576-210.jpg"
+                    class="w-auto h-48 object-contain mb-2"
+                    alt="Pile of Sand">
+                <p class="text-lg font-semibold text-center">Steel</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-red-700 text-white py-10 px-4 md:px-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- Left Frame: Call to Action -->
+            <div class="text-center md:text-left">
+                <h3 class="text-2xl sm:text-3xl font-bold mb-3">Ready to buy your Building Materials?</h3>
+                <p class="text-gray-200 text-base sm:text-lg mb-4">
+                    Buy your building materials online today.
+                </p>
+            </div>
+            <!-- Right Frame: Contact Info -->
+            <div class="text-center md:text-right flex flex-col justify-center items-center md:items-end">
+                <p class="mb-2 text-lg font-semibold">Contact Address: [Your Address Here]</p>
+                <p class="mb-2 text-md">&copy; 2025 All Rights Reserved</p>
+                <p class="mb-2 text-lg font-semibold">E-Mail ID: [Your Email Here]</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script> 
+    <script>
+        // Get the loading overlay element
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        // Function to show the loading overlay
+        function showLoading() {
+            loadingOverlay.classList.add('active');
+        }
+
+        document.getElementById('order').addEventListener('click', function(){
+            showLoading(); // Show loading before redirecting
+            window.location.href = "Product.html";
+        });
+
+        document.getElementById('admin').addEventListener('click', function(){
+            showLoading(); // Show loading before redirecting
+            window.location.href = "aregister.html";
+        });
+    </script>
+</body>
+</html>

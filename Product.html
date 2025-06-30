@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OM Muruga Traders</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General body styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0; /* Ensure no default margin from browser */
+            padding: 0; /* Ensure no default padding from browser */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column; /* Allow content to stack vertically */
+        }
+
+        /* Hover effect for cards */
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border for definition */
+            overflow: hidden; /* Ensure content is clipped if it overflows */
+        }
+
+        .hover-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Page loader overlay */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: none; /* Allow clicks to pass through if hidden */
+            opacity: 0; /* Start hidden */
+            transition: opacity 0.3s ease; /* Smooth transition */
+        }
+
+        .page-loader.show {
+            opacity: 1; /* Show when active */
+            pointer-events: auto; /* Enable pointer events when active */
+        }
+
+        /* Header specific styles */
+        header .navbar {
+            background-image: url('https://cdn.globalso.com/goldenpowerfj/Fiber_20Cement_20Siding_20That_20Looks_20LIke_20Wood_203-11.png');
+            background-size: cover;
+            background-position: center; /* Center the background image */
+        }
+
+        header .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            color: white; /* Ensure text is white */
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* Main content background */
+        main {
+            flex-grow: 1; /* Allow main content to take available space */
+            background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/source/ff986328573043.55c76ee2e38ca.gif');
+            background-size: cover;
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Prevent repeating */
+        }
+
+        /* Card image size consistency - Adjusted for better responsiveness */
+        .card-img-top-custom {
+            max-height: 8rem; /* Max height, allowing it to shrink further */
+            width: 100%; /* Take full width of its container */
+            object-fit: contain; /* Ensure image fits without cropping and maintains aspect ratio */
+            display: block; /* Remove extra space below image */
+            margin: 0 auto; /* Center image horizontally */
+            padding: 0.5rem; /* Reduced padding inside the image container */
+        }
+
+        /* Adjust card body padding */
+        .card-body {
+            padding: 0.5rem; /* Reduced padding for compact look */
+        }
+        .card-title {
+            font-size: 0.95rem; /* Slightly smaller font for titles */
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #f8f9fa; /* Light background for footer */
+            border-top: 1px solid #e9ecef; /* Top border for separation */
+            padding: 1rem 0; /* Padding for the footer content */
+            text-align: center;
+            color: #6c757d; /* Muted text color */
+        }
+
+        /* Responsive adjustments for specific elements */
+        @media (max-width: 767.98px) {
+            .navbar h4 {
+                font-size: 1rem; /* Smaller font for brand on small screens */
+            }
+            .main-heading {
+                text-align: center; /* Center heading on small screens */
+                font-size: 1.25rem !important; /* Adjust font size for mobile */
+            }
+            .cards-section {
+                padding: 1rem; /* Reduce padding around cards on mobile */
+            }
+            .list-group-item {
+                 padding: 1rem !important; /* Adjust overall section padding for mobile */
+            }
+             .card-img-top-custom {
+                max-height: 6rem; /* Even smaller max-height for very small screens */
+            }
+        }
+        @media (min-width: 576px) and (max-width: 991.98px) {
+            /* Tablet adjustments */
+            .card-img-top-custom {
+                max-height: 7rem; /* Adjusted max-height for tablets */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page loader overlay, visible during redirects -->
+    <div class="page-loader" id="page-loader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <header class="sticky-top">
+        <nav class="navbar navbar-dark text-white navbar-expand-lg navbar-expand-md border-bottom shadow-sm">
+            <div class="container-fluid py-2 px-3 px-md-5">
+                <!-- Logo & Brand -->
+                <a class="navbar-brand-custom" href="#">
+                    <img src="IMG-20250614-WA0001.jpg"
+                         onerror="this.onerror=null;this.src='https://placehold.co/45x45/cccccc/white?text=OMT';"
+                         class="rounded-circle me-2"
+                         alt="Logo"
+                         width="45"
+                         height="45">
+                    <h4 class="text-xl md:text-2xl font-bold fw-bolder text-white">OM MURUGA TRADERS</h4>
+                </a>
+                <!-- Login/Logout Button -->
+                <button id="login-button" class="btn bg-light text-dark fw-semibold px-4 py-2 rounded-pill shadow-sm">Login</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-4">
+        <div class="container">
+            <h4 class="fw-bold main-heading text-start py-4 px-3 px-md-0" style="font-size: 1.5rem;">Choose Your Building Materials</h4>
+        </div>
+
+        <div class="container cards-section pb-5">
+            <div class="list-group-item shadow-sm rounded-3 p-3 p-md-5 bg-white">
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3 mb-5 justify-content-center">
+
+                    <!-- Cement Cards -->
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://freehindidesign.com/wp-content/uploads/2021/11/Ultratech-cement-bag-hd-image-png-file.webp"
+                                 class="card-img-top-custom" alt="UltraTech Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">UltraTech Cement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2024/1/375195323/BO/TH/YG/123014326/acc-43-grade-cement-500x500.jpg"
+                                 class="card-img-top-custom" alt="ACC Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">ACC Cement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2025/5/514333609/CT/MM/LO/220276594/ambuja-ppc-cement-500x500.png"
+                                 class="card-img-top-custom" alt="Ambuja Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Ambuja Cement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2022/7/UK/SM/XL/31589138/ramco-cement-ppc-bop-500x500.png"
+                                 class="card-img-top-custom" alt="Ramco Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Ramco Cement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2022/11/EL/OT/JG/49626400/43-grade-dalmia-cement-500x500.png"
+                                 class="card-img-top-custom" alt="Dalmia Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Dalmia Cement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://www.birlawhite.com/images/product-category/white-cement/product/img-2.webp"
+                                 class="card-img-top-custom" alt="Birla Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Birla Cement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://static.wixstatic.com/media/03a5e7_c353da5e018143e8a0481a28e1bd34c5~mv2.png/v1/fill/w_560,h_598,al_c,lg_1,q_85,enc_avif,quality_auto/03a5e7_c353da5e018143e8a0481a28e1bd34c5~mv2.png"
+                                 class="card-img-top-custom" alt="JK Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">JK Cement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2024/2/388737103/OX/CF/HY/692508/shree-cement-500x500.jpg"
+                                 class="card-img-top-custom" alt="Shree Cement">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Shree Cement</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bricks Cards -->
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2025/4/503909193/WS/XE/SR/107834600/wire-cut-brick.png"
+                                 class="card-img-top-custom" alt="Wire Cut Bricks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Wire Cut Bricks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://content.jdmagicbox.com/quickquotes/images_main/chamber-brick-manufacturers-355388344-yw4f5.jpg?impolicy=queryparam&im=Resize=(360,360),aspect=fit"
+                                 class="card-img-top-custom" alt="Chamber Bricks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Chamber Bricks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://media.istockphoto.com/id/184299701/photo/four-red-bricks-isolated-on-white.jpg?s=612x612&w=0&k=20&c=bNIKDLvArweg8z6OrlQOrP8uue3tpGMMtCxFH6vgd-Y="
+                                 class="card-img-top-custom" alt="Country Bricks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Country Bricks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://shop.agaminteriors.in/wp-content/uploads/2018/08/Loacl-Red-Bricks-in-Coimbatore.jpg"
+                                 class="card-img-top-custom" alt="Clay Bricks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Clay Bricks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2023/6/314273890/TD/PM/TL/130689910/construction-fly-ash-cement-brick.png"
+                                 class="card-img-top-custom" alt="Fly Ash Bricks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Fly Ash Bricks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://media.istockphoto.com/id/1469358691/photo/construction-blocks-on-a-white-background-3d-illustration.jpg?s=612x612&w=0&k=20&c=zZK8g5OKheNAaU-PgOhIO-Bun9s8bhqrJO9juI-VWNM="
+                                 class="card-img-top-custom" alt="Solid Concrete Blocks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Solid Concrete Blocks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://thumbs.dreamstime.com/b/concrete-hollow-blocks-construction-white-background-83257597.jpg"
+                                 class="card-img-top-custom" alt="Hollow Concrete Blocks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Hollow Concrete Blocks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://media.istockphoto.com/id/1410452186/photo/foamed-lightweight-concrete-isolated-on-white.jpg?s=612x612&w=0&k=20&c=XCtmJhurwiNjjFAuFtvkfB62JEgfk0sv9B32Eq4xywI="
+                                 class="card-img-top-custom" alt="AAC Blocks">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">AAC Blocks</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sand Cards -->
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2024/11/464965877/GQ/XF/KI/134482041/construction-m-sand-500x500.jpg"
+                                 class="card-img-top-custom" alt="M-Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">M-Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://images.jdmagicbox.com/quickquotes/images_main/psand-2222955378-ctlqesoy.jpg"
+                                 class="card-img-top-custom" alt="P-Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">P-Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://www.growbusinessforsure.com/Product_images/product_images/construction_sand.jpg"
+                                 class="card-img-top-custom" alt="River Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">River Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://img.freepik.com/premium-photo/sand-pits-isolated-transparent-background_1033130-11985.jpg"
+                                 class="card-img-top-custom" alt="Pit Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Pit Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://previews.123rf.com/images/teodora1/teodora11907/teodora1190700035/127668512-sand-heap-isolated-on-white-background.jpg"
+                                 class="card-img-top-custom" alt="Sea Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Sea Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://media.istockphoto.com/id/1505310985/photo/pile-of-gravel-or-stone-for-construction-isolated-on-white-background-included-clipping-path.jpg?s=612x612&w=0&k=20&c=UaFJGyL_vx9X7jUzVSGy0iwyqhg_0ZFTbcskBkGCH0M="
+                                 class="card-img-top-custom" alt="Crushed Stone Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Crushed Stone Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfhTCdH_C3u9hQ9v1gtHRm3DroNqEOr2Cn9iA5uU3L_AurXCJube46qh7ZP4pdJo7WaZA&usqp=CAU"
+                                 class="card-img-top-custom" alt="Silica Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Silica Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjXG3u862-KEl7e4kaStYNq0OSTo9x_qFsNSRoHTpY8YulMRFq-rEIL60_fpvAcBk31_E&usqp=CAU"
+                                 class="card-img-top-custom" alt="Filling Sand">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Filling Sand</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Jalli/Stone Cards -->
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2023/5/307085246/CJ/GL/LJ/145405043/20mm-blue-metal-stone-500x500.png"
+                                 class="card-img-top-custom" alt="6 mm Jalli">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">6 mm Jalli</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://content.jdmagicbox.com/comp/def_content/blue-metal-dealers/screenshot-2-blue-metal-dealers-2-h6dm5.jpg"
+                                 class="card-img-top-custom" alt="12 mm Jalli">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">12 mm Jalli</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK2RzW4sKkT3yBL69DZu-bOee-e4hk0KxNlTmYUiKBS-X28BoesxqFfIjjQUXGF6JXdXI&usqp=CAU"
+                                 class="card-img-top-custom" alt="20 mm Jalli">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">20 mm Jalli</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgTcWNi9qNu78nt6Bsli_Vnorhzvs-jg2rQw&s"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">40 mm Jelly Stone</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://t4.ftcdn.net/jpg/01/72/82/33/360_F_172823321_7aDxS2BhLlObYuUdKNLnCtusUnhmDhMB.jpg"
+                                 class="card-img-top-custom" alt="Quarry Dust">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Quarry Dust</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwm9znFr47jKWvMg1NOFkrL5By22YWB5b4w&s"
+                                 class="card-img-top-custom" alt="Granite Chips">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Granite Chips</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://www.shutterstock.com/image-photo/pale-crushed-stone-isolated-on-600nw-87960439.jpg"
+                                 class="card-img-top-custom" alt="Basalt Crushed Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Basalt Crushed Stone</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://static.vecteezy.com/system/resources/previews/039/555/903/non_2x/a-pile-of-rocks-on-a-white-background-photo.jpg"
+                                 class="card-img-top-custom" alt="Trap Rock Jalli">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Trap Rock Jalli</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2025/2/486843155/UV/WW/MS/97972524/6mm-mild-steel-tmt-bar-500x500.jpeg"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Tata Tiscon</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2023/2/JL/YF/UD/137243755/10mm-kalika-tmt-bars-500x500.jpg"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">JSW Neosteel	</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2024/6/424581991/UW/XE/KJ/46488645/ms-rectangular-pipe-500x500.jpg"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">SAIL</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://img.freepik.com/premium-photo/reinforcing-steel-bars-building-armature-isolated-white-background_104576-210.jpg"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Vizag Steel (RINL)</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2023/3/SB/HY/ID/112266664/12mm-ms-tmt-bar-1000x1000-500x500.jpg"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">ARS Steel	</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2025/3/494730376/DY/QM/WG/58260889/12-mm-kamachi-tmt-steel-bar-500x500.jpg"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Kamachi TMT	</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2025/1/482248113/ZV/WP/HB/237593170/16mm-amman-try-tmt-steel-bar-500x500.jpg"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Amman TRY TMT	</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col d-flex justify-content-center">
+                        <div class="card h-100 w-100 rounded-3 shadow-sm hover-card d-flex flex-column align-items-center"
+                             onclick="handleCardClick()">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNHhgFnAeQcYWTNc7yAj0t227HyZOFn_W6W_AftdbkNd9qetyrBqiFIVrRUEnP8EstM2c&usqp=CAU"
+                                 class="card-img-top-custom" alt="40 mm Jelly Stone">
+                            <div class="card-body text-center">
+                                <p class="card-title fw-semibold mb-0">Dhanalakshmi TMT	</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 - OM Muruga Traders</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        // Function to show the page loader and redirect
+        function showLoaderAndRedirect(url) {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.classList.add('show'); // Show the loader
+            }
+            // Redirect after a short delay to allow the loader to appear
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300);
+        }
+
+        // Function to update the login button's text based on login status
+        function updateLoginButtonUI() {
+            const loginButton = document.getElementById('login-button');
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Check login status from local storage
+
+            if (loginButton) {
+                if (isLoggedIn) {
+                    loginButton.textContent = 'Logout'; // Change text to Logout if logged in
+                } else {
+                    loginButton.textContent = 'Login'; // Change text to Login if not logged in
+                }
+            }
+        }
+
+        // Function to handle the login/logout button click
+        function toggleLogin() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+            if (isLoggedIn) {
+                // If currently logged in, perform logout
+                localStorage.removeItem('isLoggedIn'); // Clear login status from local storage
+                alert("You have been logged out!"); // Show a message (consider using a modal instead of alert)
+            } else {
+                // If not logged in, simulate login and redirect to login page
+                localStorage.setItem('isLoggedIn', 'true'); // Set login status to true
+                showLoaderAndRedirect('login.html'); // Redirect to the login page
+                return; // Exit function to prevent further UI update immediately
+            }
+            updateLoginButtonUI(); // Update button text after toggling status
+        }
+
+        // Function to handle clicks on product cards
+        function handleCardClick() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Check login status
+
+            if (isLoggedIn) {
+                showLoaderAndRedirect('index.html'); // If logged in, go to size.html
+            } else {
+                showLoaderAndRedirect('login.html'); // If not logged in, go to login.html
+            }
+        }
+
+        // Event listener to set up the page after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the login button UI on page load
+            updateLoginButtonUI();
+
+            // Add click listener to the login button
+            const loginButton = document.getElementById('login-button');
+            if (loginButton) {
+                loginButton.addEventListener('click', toggleLogin);
+            }
+        });
+    </script>
+</body>
+</html>

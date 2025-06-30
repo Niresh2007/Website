@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Panel - My Orders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+        }
+        /* Styles applied from Order.html for table cells */
+        .order-table th, .order-table td {
+            padding: 0.75rem; /* Consistent padding */
+            border-bottom: 1px solid #e5e7eb; /* Consistent bottom border */
+        }
+        .order-table th {
+            background-color: #f9fafb; /* Consistent background color for headers */
+            font-weight: 600; /* Consistent font weight for headers */
+            color: #4b5563; /* Consistent text color for headers */
+            text-align: center; /* Explicitly center headers */
+        }
+        .order-table td {
+            text-align: left; /* Explicitly left-align data cells */
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* pill shape */
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-pending { background-color: #fef3c7; color: #92400e; } /* amber */
+        .status-canceled { background-color: #fee2e2; color: #991b1b; } /* red */
+        .status-completed { background-color: #d1fae5; color: #065f46; } /* green */
+        .status-paid { background-color: #d1fae5; color: #065f46; } /* green for paid */
+        .status-partially-paid { background-color: #fff3c7; color: #a2700e; } /* amber for partially paid */
+        .status-unpaid { background-color: #fee2e2; color: #991b1b; } /* red for unpaid */
+
+
+        /* Chat styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 600px; /* Fixed height for chat area */
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background-color: #f8f8f8; /* Light background for chat */
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background-image: url('https://placehold.co/600x400/E0F0E0/ffffff?text=CHAT+BACKGROUND'); /* Placeholder for WhatsApp-like background */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .message-bubble {
+            max-width: 75%;
+            padding: 0.6rem 0.8rem;
+            border-radius: 0.75rem;
+            word-wrap: break-word;
+            position: relative;
+            font-size: 0.9rem;
+        }
+        .message-bubble.sent {
+            align-self: flex-end;
+            background-color: #dcf8c6; /* WhatsApp sent message color */
+            color: #1a202c;
+            border-bottom-right-radius: 0.2rem;
+            box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+        }
+        .message-bubble.received {
+            align-self: flex-start;
+            background-color: #ffffff; /* WhatsApp received message color */
+            color: #1a202c;
+            border-bottom-left-radius: 0.2rem;
+            box-shadow: 0 1px 0.5px rgba(0,0,0,0.08);
+        }
+        .message-sender {
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            opacity: 0.7;
+        }
+        .message-timestamp {
+            font-size: 0.65rem;
+            color: #6b7280;
+            margin-top: 0.3rem;
+            text-align: right;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            gap: 0.5rem;
+        }
+        .chat-input-area input {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px; /* fully rounded */
+            font-size: 1rem;
+        }
+        .chat-input-area button {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0; /* Prevent button from shrinking */
+        }
+        .chat-input-area button:hover {
+            background-color: #1d4ed8;
+        }
+        .message-actions {
+            position: absolute;
+            top: 0.2rem;
+            right: 0.2rem;
+            display: flex;
+            gap: 0.2rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: 0.3rem;
+            padding: 0.1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+        }
+        .message-bubble:hover .message-actions {
+            visibility: visible;
+            opacity: 1;
+        }
+        .message-actions button {
+            background: none;
+            border: none;
+            color: #4a5568;
+            cursor: pointer;
+            padding: 0.2rem;
+            font-size: 0.8rem;
+        }
+        .message-actions button:hover {
+            color: #2d3748;
+        }
+        /* Style for the file attachment icon/button */
+        .attach-file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px; /* fixed width for a square button */
+            height: 44px; /* fixed height for a square button */
+            background-color: #f0f2f5; /* Light gray background */
+            color: #4b5563; /* Darker gray icon color */
+            border-radius: 9999px; /* fully rounded */
+            cursor: pointer;
+            font-size: 1.5rem; /* Icon size */
+            transition: background-color 0.2s, color 0.2s;
+            flex-shrink: 0; /* Prevent from shrinking */
+            margin-right: 0.25rem; /* Space before input field */
+        }
+        .attach-file-label:hover {
+            background-color: #e5e7eb; /* Slightly darker on hover */
+            color: #1f2937; /* Even darker icon color on hover */
+        }
+        .hidden-file-input {
+            display: none; /* Hide the actual file input */
+        }
+
+        /* Message box styling */
+        .message-box-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s;
+        }
+        .message-box-container.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .message-box {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .message-box h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .message-box p {
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        .message-box button {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .message-box button:hover {
+            background-color: #1d4ed8;
+        }
+        /* File upload button styling */
+        .file-upload-label {
+            display: inline-flex;
+            align-items: center;
+            background-color: #4a90e2; /* Blue color */
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .file-upload-label:hover {
+            background-color: #357ABD;
+        }
+        .file-upload-label svg {
+            margin-right: 0.5rem;
+        }
+        .file-upload-input {
+            display: none; /* Hide the actual file input */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex flex-col items-center min-h-screen bg-gray-100" style="background-image: url('https://media1.giphy.com/media/2tNvsKkc0qFdNhJmKk/200w.gif');background-size: cover;">
+    <div class="container mx-auto">
+        <div class="card mb-8">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Customer Panel</h1>
+            <p class="text-center text-gray-600 mb-8">View your orders and chat with admin.</p>
+
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-700">My Orders</h2>
+                <button onclick="window.location.href='index.html'" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
+                    Back to Form
+                </button>
+            </div>
+
+            <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center">
+                <label for="customerPhoneNumberFilter" class="form-label mb-0">Enter Your Phone Number to View Orders:</label>
+                <input type="tel" id="customerPhoneNumberFilter" class="form-input flex-grow" placeholder="+91-1234567890">
+                <button id="applyFilterBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                    View My Orders
+                </button>
+            </div>
+            <script>
+                // Auto-fill and lock phone number if set in localStorage by index.html
+                document.addEventListener('DOMContentLoaded', () => {
+                    const storedPhone = localStorage.getItem('customerPhoneNumber');
+                    if (storedPhone && storedPhone.trim() !== '') {
+                        customerPhoneNumberFilter.value = storedPhone;
+                        customerPhoneNumberFilter.readOnly = true;
+                        // Directly load orders and chat for this phone number
+                        loadCustomerOrders(storedPhone);
+                        loadCustomerChatMessages(storedPhone);
+                        localStorage.setItem('lastCustomerPhoneNumber', storedPhone);
+                    }
+                });
+            </script>
+
+            <div class="overflow-x-auto rounded-lg shadow-md">
+                <table class="min-w-full order-table border border-gray-300 text-center">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300">Order ID</th>
+                            <th class="border border-gray-300">Brand</th>
+                            <th class="border border-gray-300">Qty</th>
+                            <th class="border border-gray-300">Total Amount</th>
+                            <th class="border border-gray-300">Paid Amount</th>
+                            <th class="border border-gray-300">Payment Status</th>
+                            <th class="border border-gray-300">Delivery Date</th>
+                            <th class="border border-gray-300">Status</th>
+                            <th class="border border-gray-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerOrdersTableBody">
+                        <!-- Customer-specific orders will be dynamically loaded here -->
+                    </tbody>
+                </table>
+                <p id="noCustomerOrdersMessage" class="text-center text-gray-500 py-4 hidden">No orders found for this phone number.</p>
+            </div>
+        </div>
+
+        <div class="card mt-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Customer Chat</h2>
+            <div class="chat-container">
+                <div class="chat-messages" id="customerChatMessages">
+                    <!-- Chat messages will be loaded here -->
+                </div>
+                <div class="chat-input-area flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2 w-full">
+                    <!-- File attachment input and button -->
+                    <label for="customerAttachFileInput" class="attach-file-label" title="Attach File">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l7.07-7.07a4 4 0 00-5.657-5.657l-7.07 7.07a6 6 0 108.485 8.485l6.364-6.364"></path>
+                        </svg>
+                        <input type="file" id="customerAttachFileInput" class="hidden-file-input" accept=".jpg,.jpeg,.png,.pdf">
+                    </label>
+                    <input type="text" id="customerChatMessageInput" placeholder="Type a message..." class="flex-grow min-w-0">
+                    <button id="customerSendMessageBtn" class="mt-2 sm:mt-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Message Box for alerts -->
+    <div id="messageBoxContainer" class="message-box-container">
+        <div class="message-box">
+            <h3 id="messageBoxTitle"></h3>
+            <p id="messageBoxContent"></p>
+            <button id="messageBoxCloseBtn">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Unique ID generator (should be consistent across all pages)
+        // Include UUID library for robust ID generation
+        function generateUniqueId() {
+            return 'uid-' + crypto.randomUUID();
+        }
+
+        // --- Custom Message Box ---
+        const messageBoxContainer = document.getElementById('messageBoxContainer');
+        const messageBoxTitle = document.getElementById('messageBoxTitle');
+        const messageBoxContent = document.getElementById('messageBoxContent');
+        const messageBoxCloseBtn = document.getElementById('messageBoxCloseBtn');
+
+        messageBoxCloseBtn.addEventListener('click', () => {
+            messageBoxContainer.classList.remove('show');
+        });
+
+        function showMessageBox(title, message, type = 'info') {
+            messageBoxTitle.textContent = title;
+            messageBoxContent.textContent = message;
+            messageBoxContainer.classList.add('show');
+
+            // Optionally add styling based on type
+            const messageBox = messageBoxContainer.querySelector('.message-box');
+            messageBox.style.borderColor = ''; // Reset
+            messageBox.style.boxShadow = ''; // Reset
+
+            if (type === 'success') {
+                messageBox.style.borderColor = '#065f46';
+                messageBox.style.boxShadow = '0 4px 20px rgba(6, 95, 70, 0.2)';
+            } else if (type === 'error') {
+                messageBox.style.borderColor = '#991b1b';
+                messageBox.style.boxShadow = '0 4px 20px rgba(153, 27, 27, 0.2)';
+            } else { // info
+                messageBox.style.borderColor = '#2563eb';
+                messageBox.style.boxShadow = '0 4px 20px rgba(37, 99, 235, 0.2)';
+            }
+        }
+
+        // --- Order Management ---
+        const customerPhoneNumberFilter = document.getElementById('customerPhoneNumberFilter');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const customerOrdersTableBody = document.getElementById('customerOrdersTableBody');
+        const noCustomerOrdersMessage = document.getElementById('noCustomerOrdersMessage');
+
+        let currentFilteredPhoneNumber = ''; // To store the phone number currently being viewed
+
+        // Function to load and display customer-specific orders
+        function loadCustomerOrders(phoneNumber) {
+            currentFilteredPhoneNumber = phoneNumber;
+            let orders = [];
+            try {
+                orders = JSON.parse(localStorage.getItem('cementOrders')) || [];
+                if (!Array.isArray(orders)) {
+                    orders = [];
+                }
+            } catch (e) {
+                console.error("Error parsing cementOrders from localStorage:", e);
+                orders = [];
+            }
+
+            customerOrdersTableBody.innerHTML = ''; // Clear existing rows
+            const customerOrders = orders.filter(order => order.phoneNumber === phoneNumber);
+
+            if (customerOrders.length === 0) {
+                noCustomerOrdersMessage.classList.remove('hidden');
+            } else {
+                noCustomerOrdersMessage.classList.add('hidden');
+                customerOrders.forEach(order => {
+                    const row = document.createElement('tr');
+                    const totalAmount = parseFloat(order.totalAmount || 0);
+                    const paidAmount = parseFloat(order.customerPaidAmount || 0);
+
+                    // Determine payment status for display
+                    let paymentStatusText = 'Unpaid';
+                    let paymentStatusClass = 'status-unpaid';
+
+                    if (paidAmount > 0) {
+                        if (paidAmount >= totalAmount) {
+                            paymentStatusText = 'Paid';
+                            paymentStatusClass = 'status-paid';
+                        } else {
+                            paymentStatusText = `Partially Paid`;
+                            paymentStatusClass = 'status-partially-paid';
+                        }
+                    }
+
+                    // Determine if payment confirmation UI should be shown
+                    const showPaymentConfirmation = order.paymentMode === 'UPI' && order.status === 'Pending' && paidAmount < totalAmount;
+
+                    row.innerHTML = `
+                        <td class="border border-gray-300 text-left">
+                            <div class="flex items-center justify-center">
+                                ${order.id.substring(0, 8)}...
+                            </div>
+                        </td>
+                        <td class="border border-gray-300 text-center">${order.materialName}</td>
+                        <td class="border border-gray-300 text-center">${order.quantity}</td>
+                        <td class="border border-gray-300 text-center ">₹ ${totalAmount.toFixed(2)}</td>
+                        <td class="border border-gray-300 text-center ">₹ ${paidAmount.toFixed(2)}</td>
+                        <td class="border border-gray-300 text-center"><span class="status-badge flex justify-center items-center ${paymentStatusClass}">${paymentStatusText}</span></td>
+                        <td class="border border-gray-300 text-center"><div class="flex justify-center items-center">${order.deliveryDate}</div></td>
+                        <td class="border border-gray-300 text-center"><span class="status-badge status-${order.status.toLowerCase()}">${order.status}</span></td>
+                        <td class="border border-gray-300 text-left">
+                            <div class="flex flex-col items-center justify-center">
+                                <div class="flex justify-center w-full">
+                                    ${order.status === 'Pending' ? `<button onclick="cancelOrder('${order.id}')" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs mr-2">Cancel</button>` : `<button class="bg-gray-400 text-white font-bold py-1 px-2 rounded text-xs cursor-not-allowed mr-2" disabled>Canceled</button>`}
+                                </div>
+                                ${showPaymentConfirmation ? `
+                                    <div class="mt-2 flex flex-col items-center gap-1 w-full">
+                                        <input type="number" id="paidAmount_${order.id}" class="form-input text-sm w-32 text-center" placeholder="Paid Amt" min="0" step="0.01" value="${paidAmount.toFixed(2)}">
+                                        <button onclick="confirmCustomerPayment('${order.id}')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-xs mt-1 mx-auto">Confirm Payment</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </td>
+                    `;
+                    customerOrdersTableBody.appendChild(row);
+                });
+            }
+        }
+
+        // Event listener for applying filter
+        applyFilterBtn.addEventListener('click', () => {
+            const phoneNumber = customerPhoneNumberFilter.value.trim();
+            if (phoneNumber) {
+                // Basic regex for Indian phone numbers (10 digits, starts with 6-9)
+                const phoneRegex = /^[6-9]\d{9}$/;
+                if (!phoneRegex.test(phoneNumber)) {
+                    showMessageBox('Invalid Phone Number', 'Please enter a valid 10-digit Indian phone number (starts with 6-9).', 'error');
+                    customerOrdersTableBody.innerHTML = '';
+                    noCustomerOrdersMessage.classList.remove('hidden');
+                    customerChatMessagesDiv.innerHTML = ''; // Clear chat as well
+                    customerChatMessagesDiv.dataset.customerPhoneNumber = ''; // Clear chat phone number
+                    return;
+                }
+                loadCustomerOrders(phoneNumber);
+                loadCustomerChatMessages(phoneNumber); // Also load chat for this customer
+                localStorage.setItem('lastCustomerPhoneNumber', phoneNumber); // Save for persistence
+            } else {
+                showMessageBox('Input Required', 'Please enter your phone number to view orders.', 'info');
+                customerOrdersTableBody.innerHTML = '';
+                noCustomerOrdersMessage.classList.remove('hidden');
+                customerChatMessagesDiv.innerHTML = ''; // Clear chat as well
+                customerChatMessagesDiv.dataset.customerPhoneNumber = ''; // Clear chat phone number
+            }
+        });
+
+        // Function to cancel an order
+        function cancelOrder(orderId) {
+            let orders = JSON.parse(localStorage.getItem('cementOrders')) || [];
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+
+            if (orderIndex !== -1) {
+                if (orders[orderIndex].status === 'Pending') {
+                    orders[orderIndex].status = 'Canceled';
+                    localStorage.setItem('cementOrders', JSON.stringify(orders));
+                    showMessageBox('Order Canceled', `Order ${orderId.substring(0, 8)}... has been canceled.`, 'success');
+                    loadCustomerOrders(currentFilteredPhoneNumber); // Reload orders to reflect the change
+                } else {
+                    showMessageBox('Cancellation Not Possible', 'This order cannot be canceled as its status is not Pending.', 'error');
+                }
+            }
+        }
+
+        // Function to confirm customer payment for UPI orders (manual input)
+        function confirmCustomerPayment(orderId) {
+            let orders = JSON.parse(localStorage.getItem('cementOrders')) || [];
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+
+            if (orderIndex !== -1) {
+                const order = orders[orderIndex];
+                const paidAmountInput = document.getElementById(`paidAmount_${orderId}`);
+                const paidAmount = parseFloat(paidAmountInput.value);
+
+                if (isNaN(paidAmount) || paidAmount < 0) {
+                    showMessageBox('Invalid Amount', 'Please enter a valid positive amount.', 'error');
+                    return;
+                }
+                if (paidAmount + (order.customerPaidAmount || 0) > order.totalAmount) { // Prevent overpayment
+                    showMessageBox('Amount Exceeded', `Total paid amount cannot be more than total order amount (₹ ${order.totalAmount.toFixed(2)}).`, 'error');
+                    return;
+                }
+
+                // Add to existing paid amount if partially paid before
+                order.customerPaidAmount = (order.customerPaidAmount || 0) + paidAmount;
+                order.paymentStatus = (order.customerPaidAmount >= order.totalAmount) ? 'Paid' : 'Partially Paid';
+                
+                localStorage.setItem('cementOrders', JSON.stringify(orders));
+                showMessageBox('Payment Confirmed', `Payment of ₹ ${paidAmount.toFixed(2)} confirmed for Order ${orderId.substring(0, 8)}... New Status: ${order.paymentStatus}`, 'success');
+                loadCustomerOrders(currentFilteredPhoneNumber); // Reload orders to update display
+            }
+        }
+
+
+        // Listen for changes in localStorage from other tabs/windows
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'cementOrders' && currentFilteredPhoneNumber) {
+                loadCustomerOrders(currentFilteredPhoneNumber); // Reload customer orders if relevant
+            }
+            if (event.key === 'chatMessages' && currentFilteredPhoneNumber) {
+                loadCustomerChatMessages(currentFilteredPhoneNumber); // Reload chat messages if relevant
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lastPhoneNumber = localStorage.getItem('lastCustomerPhoneNumber');
+            if (lastPhoneNumber) {
+                customerPhoneNumberFilter.value = lastPhoneNumber;
+                loadCustomerOrders(lastPhoneNumber); // Load orders for the last viewed number
+                loadCustomerChatMessages(lastPhoneNumber); // Load chat for the last viewed number
+            }
+        });
+
+
+        // --- Chat Functionality ---
+        const customerChatMessageInput = document.getElementById('customerChatMessageInput');
+        const customerSendMessageBtn = document.getElementById('customerSendMessageBtn');
+        const customerChatMessagesDiv = document.getElementById('customerChatMessages');
+        const customerAttachFileInput = document.getElementById('customerAttachFileInput');
+
+        // Variable to hold the name of the attached file
+        let attachedFileNameCustomer = '';
+
+        // Handle file selection for customer chat
+        customerAttachFileInput.addEventListener('change', (event) => {
+            if (event.target.files.length > 0) {
+                attachedFileNameCustomer = event.target.files[0].name;
+                customerChatMessageInput.value = `[File: ${attachedFileNameCustomer}]`; // Display file name in input
+                customerChatMessageInput.disabled = true; // Disable text input while a file is "attached"
+                showMessageBox('File Attached', `File "${attachedFileNameCustomer}" is ready to be sent.`, 'info');
+            } else {
+                attachedFileNameCustomer = '';
+                customerChatMessageInput.value = '';
+                customerChatMessageInput.disabled = false;
+            }
+        });
+
+        // Function to load and display chat messages
+        function loadCustomerChatMessages(customerPhoneNumber) {
+            // Store the customer's phone number in a temporary global variable or data attribute
+            // This is crucial for distinguishing chats in a multi-customer scenario
+            customerChatMessagesDiv.dataset.customerPhoneNumber = customerPhoneNumber;
+
+            let messages = [];
+            try {
+                messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+                if (!Array.isArray(messages)) {
+                    messages = [];
+                }
+            } catch (e) {
+                console.error("Error parsing chatMessages from localStorage:", e);
+                messages = [];
+            }
+
+            customerChatMessagesDiv.innerHTML = ''; // Clear existing messages
+
+            // Filter messages relevant to this customer (by phone number or if from admin and explicitly for this customer)
+            const filteredMessages = messages.filter(msg =>
+                (msg.sender === 'customer' && msg.customerPhoneNumber === customerPhoneNumber) ||
+                (msg.sender === 'admin' && (msg.recipientPhoneNumber === customerPhoneNumber || !msg.recipientPhoneNumber)) // Admin messages explicit for this customer or general
+            );
+
+            filteredMessages.forEach(msg => {
+                const messageElement = document.createElement('div');
+                // Determine if the message is 'sent' by the current customer or 'received' from admin
+                const isSentByMe = (msg.sender === 'customer' && msg.customerPhoneNumber === customerPhoneNumber);
+                messageElement.className = `message-bubble ${isSentByMe ? 'sent' : 'received'}`;
+                messageElement.dataset.messageId = msg.id;
+
+                let senderName = isSentByMe ? 'You' : (msg.sender === 'admin' ? 'Admin' : `Unknown`); // Should only be admin if not "you"
+                let messageContent = msg.text;
+
+                if (msg.status === 'deleted') {
+                    messageContent = '🚫 This message was deleted.';
+                    messageElement.classList.add('italic', 'text-gray-500');
+                } else if (msg.status === 'edited') {
+                    messageContent += ' (edited)';
+                }
+
+                // If the message contains a file, render it appropriately
+                if (msg.fileName) {
+                    messageContent += `<br><span class="text-blue-600">📁 ${msg.fileName}</span>`;
+                }
+
+                messageElement.innerHTML = `
+                    <div class="message-sender">${senderName}</div>
+                    <div>${messageContent}</div>
+                    <div class="message-timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</div>
+                    ${isSentByMe && msg.status !== 'deleted' ? `
+                    <div class="message-actions">
+                        <button onclick="editCustomerMessage('${msg.id}')" title="Edit">✏️</button>
+                        <button onclick="deleteCustomerMessage('${msg.id}')" title="Delete">🗑️</button>
+                    </div>` : ''}
+                `;
+                customerChatMessagesDiv.appendChild(messageElement);
+            });
+            customerChatMessagesDiv.scrollTop = customerChatMessagesDiv.scrollHeight; // Scroll to bottom
+        }
+
+        // Function to send customer message
+        customerSendMessageBtn.addEventListener('click', () => {
+            const messageText = customerChatMessageInput.value.trim();
+            const customerPhoneNumber = customerChatMessagesDiv.dataset.customerPhoneNumber; // Get from data attribute
+
+            if (!customerPhoneNumber) {
+                showMessageBox('Phone Number Required', 'Please enter your phone number first to start chatting.', 'info');
+                return;
+            }
+
+            // Check if there's a file attached but no custom text provided
+            if (!messageText && !attachedFileNameCustomer) {
+                showMessageBox('Empty Message', 'Please type a message or attach a file to send.', 'info');
+                return;
+            }
+
+            let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+            const newMessage = {
+                id: generateUniqueId(),
+                sender: 'customer',
+                customerPhoneNumber: customerPhoneNumber, // Crucial for filtering
+                text: messageText,
+                timestamp: new Date().toISOString(),
+                status: 'sent',
+                fileName: attachedFileNameCustomer || undefined // Add file name if attached
+            };
+            messages.push(newMessage);
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+            customerChatMessageInput.value = ''; // Clear input
+            customerChatMessageInput.disabled = false; // Re-enable input
+            attachedFileNameCustomer = ''; // Clear attached file
+            customerAttachFileInput.value = ''; // Clear file input
+            loadCustomerChatMessages(customerPhoneNumber); // Reload and display
+        });
+
+        // Allow sending message with Enter key
+        customerChatMessageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                customerSendMessageBtn.click();
+            }
+        });
+
+        // Function to edit a message (customer side)
+        function editCustomerMessage(messageId) {
+            let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+            const messageIndex = messages.findIndex(msg => msg.id === messageId);
+            const customerPhoneNumber = customerChatMessagesDiv.dataset.customerPhoneNumber;
+
+            if (messageIndex !== -1 && messages[messageIndex].sender === 'customer' && messages[messageIndex].customerPhoneNumber === customerPhoneNumber && messages[messageIndex].status !== 'deleted') {
+                const currentText = messages[messageIndex].text;
+                // Using prompt for simplicity; in a real app, use a custom modal
+                const newText = prompt('Edit your message:', currentText); 
+                if (newText !== null && newText.trim() !== '' && newText.trim() !== currentText) {
+                    messages[messageIndex].text = newText.trim();
+                    messages[messageIndex].status = 'edited';
+                    localStorage.setItem('chatMessages', JSON.stringify(messages));
+                    loadCustomerChatMessages(customerPhoneNumber);
+                }
+            } else if (messageIndex !== -1 && messages[messageIndex].status === 'deleted') {
+                showMessageBox('Cannot Edit', 'This message has been deleted and cannot be edited.', 'error');
+            }
+        }
+
+        // Function to delete a message (customer side)
+        function deleteCustomerMessage(messageId) {
+            let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+            const messageIndex = messages.findIndex(msg => msg.id === messageId);
+            const customerPhoneNumber = customerChatMessagesDiv.dataset.customerPhoneNumber;
+
+            if (messageIndex !== -1 && messages[messageIndex].sender === 'customer' && messages[messageIndex].customerPhoneNumber === customerPhoneNumber) {
+                // Instead of truly deleting, mark as 'deleted' to keep history
+                messages[messageIndex].text = 'This message was deleted.';
+                messages[messageIndex].status = 'deleted';
+                messages[messageIndex].fileName = undefined; // Remove file name if message is deleted
+                localStorage.setItem('chatMessages', JSON.stringify(messages));
+                loadCustomerChatMessages(customerPhoneNumber);
+                showMessageBox('Message Deleted', 'The message has been marked as deleted.', 'success');
+            }
+        }
+    </script>
+</body>
+</html>
