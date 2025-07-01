@@ -115,75 +115,52 @@
                 >
                     Log In
                 </button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-        const loginForm = document.querySelector("form"); // Ensure your form tag is present
-        const emailInput = document.getElementById("emailOrPhone");
-        const passwordInput = document.getElementById("password");
-        const errorMsg = document.getElementById("emailPhoneError");
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.querySelector("form"); // Ensure your form tag is present
+    const emailInput = document.getElementById("emailOrPhone");
+    const passwordInput = document.getElementById("password");
+    const errorMsg = document.getElementById("emailPhoneError");
 
-        // Toggle password visibility
-        const togglePasswordBtn = document.getElementById("togglePassword");
-        const eyeOpen = document.getElementById("eyeOpen");
-        const eyeClosed = document.getElementById("eyeClosed");
+    // Toggle password visibility
+    const togglePasswordBtn = document.getElementById("togglePassword");
+    const eyeOpen = document.getElementById("eyeOpen");
+    const eyeClosed = document.getElementById("eyeClosed");
 
-        togglePasswordBtn.addEventListener("click", () => {
-            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-            passwordInput.setAttribute("type", type);
-            eyeOpen.classList.toggle("hidden");
-            eyeClosed.classList.toggle("hidden");
-        });
-
-        // Login validation
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault(); // Prevent form from submitting normally
-
-            const enteredEmail = emailInput.value.trim();
-            const enteredPassword = passwordInput.value.trim();
-
-            const defaultEmail = "admin@gmail.com";
-            const defaultPassword = "E@gle@321";
-
-            if (enteredEmail === defaultEmail && enteredPassword === defaultPassword) {
-                alert("✅ Login successful!");
-                // You can redirect or do more here:
-                window.location.href = "Adminpanel.html"; // Example redirect
-            } else {
-                errorMsg.textContent = "❌ Invalid email or password.";
-                errorMsg.classList.remove("hidden");
-            }
-        });
+    togglePasswordBtn.addEventListener("click", () => {
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+        eyeOpen.classList.toggle("hidden");
+        eyeClosed.classList.toggle("hidden");
     });
-                    // Intercept form submit to show confirm box if admin is correct
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const loginForm = document.getElementById('loginForm');
-                        loginForm.addEventListener('submit', function(event) {
-                            // This logic is only for successful admin login
-                            // So we need to hook into the login success logic
-                            // We'll override window.location.href assignment
-                            const originalHref = window.location.href;
-                            const _setHref = (url) => {
-                                // Show confirm box before redirect
-                                const choice = confirm("Open Register click ok ");
-                                if (choice) {
-                                    window.location.href = 'admin.html';
-                                } else {
-                                    window.location.href = 'Adminpanel.html';
-                                }
-                            };
-                            // Patch setTimeout redirect in login logic
-                            const oldSetTimeout = window.setTimeout;
-                            window.setTimeout = function(fn, delay) {
-                                if (fn && fn.toString().includes("window.location.href = 'Adminpanel.html'")) {
-                                    return oldSetTimeout(function() {
-                                        _setHref();
-                                    }, delay);
-                                }
-                                return oldSetTimeout(fn, delay);
-                            };
-                        }, { once: true });
-                    });
-                </script>
+
+    // Login validation
+    loginForm.addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent form from submitting normally
+
+        const enteredEmail = emailInput.value.trim();
+        const enteredPassword = passwordInput.value.trim();
+
+        const defaultEmail = "admin@gmail.com";
+        const defaultPassword = "E@gle@321";
+
+        if (enteredEmail === defaultEmail && enteredPassword === defaultPassword) {
+            // Show confirm box
+            const choice = confirm("✅ Login successful!\n\nClick OK to open Register.\nClick Cancel to go to Admin Panel.");
+            if (choice) {
+                window.location.href = "admin.html";
+            } else {
+                window.location.href = "Adminpanel.html";
+            }
+        } else {
+            errorMsg.textContent = "❌ Invalid email or password.";
+            errorMsg.classList.remove("hidden");
+        }
+    });
+});
+</script>
+
+
             </div>
         </form>
 
