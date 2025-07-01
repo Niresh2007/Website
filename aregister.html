@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,62 +7,98 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Base body styles, using Inter font */
+        /* Base body styles, using Inter font and a clean gradient background */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
+            background-color: #f3f4f6; /* Fallback color */
+            background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
         }
 
         /* Custom CSS for the full-page Loading Overlay */
         .loading-overlay {
-            position: fixed; /* Fixes it to the viewport */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            background-color: rgba(255, 255, 255, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000; /* Ensures it's on top of all other content */
-            transition: opacity 0.3s ease-in-out; /* Smooth fade in/out effect */
-            opacity: 0; /* Initially hidden */
-            pointer-events: none; /* Allows clicks/interactions through when hidden */
+            z-index: 1000;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* Class to make the loading overlay visible */
         .loading-overlay.visible {
-            opacity: 1; /* Fully opaque */
-            pointer-events: auto; /* Disables clicks/interactions when visible */
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* Spinner animation styles */
         .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1); /* Light gray border */
-            border-left-color: #6366f1; /* Tailwind indigo-500 color for the spinning part */
-            border-radius: 50%; /* Makes it a circle */
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #6366f1; /* Tailwind indigo-500 */
+            border-radius: 50%;
             width: 40px;
             height: 40px;
-            animation: spin 1s linear infinite; /* Apply spin animation */
+            animation: spin 1s linear infinite;
         }
 
-        /* Keyframe animation for the spinner */
         @keyframes spin {
             to {
-                transform: rotate(360deg); /* Rotates the spinner 360 degrees */
+                transform: rotate(360deg);
             }
+        }
+
+        /* Custom Modal Styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal-backdrop.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            width: 90%;
+            max-width: 400px;
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .modal-backdrop.visible .modal-content {
+            transform: scale(1);
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4" style="background-image: url('https://media1.giphy.com/media/2tNvsKkc0qFdNhJmKk/200w.gif');background-size: cover;" >
-    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main Login Card -->
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md">
         <div class="text-center mb-8">
-            <img src="IMG-20250614-WA0001.jpg"
-                 onerror="this.onerror=null;this.src='https://placehold.co/45x45/cccccc/white?text=OMT';"
-                 class="h-16 w-16 mx-auto mb-4 rounded-full block"
-                 alt="Company Logo for OM Muruga Traders"
-                 width="45"
-                 height="45">
+            <img src="https://example.com/logo.jpg"
+                 onerror="this.onerror=null;this.src='https://placehold.co/64x64/6366f1/white?text=OMT';"
+                 class="h-16 w-16 mx-auto mb-4 rounded-full block object-cover"
+                 alt="Company Logo for OM Muruga Traders">
             <h1 class="text-3xl font-bold text-gray-800">OM MURUGA TRADERS</h1>
         </div>
 
@@ -73,7 +109,7 @@
                     type="text"
                     id="emailOrPhone"
                     name="emailOrPhone"
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition"
                     placeholder="e.g., user@gmail.com or 1234567890"
                     required
                 >
@@ -88,7 +124,7 @@
                     type="password"
                     id="password"
                     name="password"
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10 transition"
                     placeholder="Enter your password"
                     required
                 >
@@ -98,151 +134,108 @@
                     class="absolute inset-y-0 right-0 pr-3 flex items-center pt-8 text-gray-500 hover:text-gray-700 focus:outline-none"
                     aria-label="Toggle password visibility"
                 >
-                    <svg id="eyeOpen" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
-                    <svg id="eyeClosed" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 .96-3.09 3.09-5.462 5.56-6.811m6.298-1.577A9.954 9.954 0 0112 5c4.478 0 8.268 2.943 9.542 7-.068.275-.145.542-.232.802M15 12a3 3 0 11-6 0 3 3 0 016 0zm-3 7v-1.5M4.5 7.5L5.25 9m13.5 0l.75-1.5M12 10.5V9m-3 1.5H7.5m3 0H12"></path>
-                    </svg>
+                    <!-- Eye Open Icon -->
+                    <svg id="eyeOpen" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    <!-- Eye Closed Icon -->
+                    <svg id="eyeClosed" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 .96-3.09 3.09-5.462 5.56-6.811m6.298-1.577A9.954 9.954 0 0112 5c4.478 0 8.268 2.943 9.542 7-.068.275-.145.542-.232.802M15 12a3 3 0 11-6 0 3 3 0 016 0zm-3 7v-1.5M4.5 7.5L5.25 9m13.5 0l.75-1.5M12 10.5V9m-3 1.5H7.5m3 0H12"></path></svg>
                 </button>
             </div>
 
             <div>
                 <button
                     type="submit"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
                 >
                     Log In
                 </button>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const loginForm = document.querySelector("form"); // Ensure your form tag is present
-    const emailInput = document.getElementById("emailOrPhone");
-    const passwordInput = document.getElementById("password");
-    const errorMsg = document.getElementById("emailPhoneError");
-
-    // Toggle password visibility
-    const togglePasswordBtn = document.getElementById("togglePassword");
-    const eyeOpen = document.getElementById("eyeOpen");
-    const eyeClosed = document.getElementById("eyeClosed");
-
-    togglePasswordBtn.addEventListener("click", () => {
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", type);
-        eyeOpen.classList.toggle("hidden");
-        eyeClosed.classList.toggle("hidden");
-    });
-
-    // Login validation
-    loginForm.addEventListener("submit", function (e) {
-        e.preventDefault(); // Prevent form from submitting normally
-
-        const enteredEmail = emailInput.value.trim();
-        const enteredPassword = passwordInput.value.trim();
-
-        const defaultEmail = "admin@gmail.com";
-        const defaultPassword = "E@gle@321";
-
-        if (enteredEmail === defaultEmail && enteredPassword === defaultPassword) {
-            // Show confirm box
-           const choice = confirm("Register or Adminpanel?");
-if (choice) {
-    window.location.href = "admin.html"; // OK → Register
-} else {
-    window.location.href = "Adminpanel.html"; // Cancel → Admin Panel
-}
-
-        } 
-    });
-});
-</script>
-
-
             </div>
         </form>
-
-        <div class="mt-6 text-center">
-            <p class="text-sm text-gray-600">
-                
-                <a href="admin.html" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    
-                </a>
-            </p>
-        </div>
-        
 
         <div id="messageBox" class="mt-6 p-3 rounded-md text-sm text-center hidden" role="alert"></div>
     </div>
 
-    <div id="loadingOverlay" class="loading-overlay visible">
-        <div class="spinner"></div> </div>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Custom Modal for Admin Options -->
+    <div id="adminModal" class="modal-backdrop">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Admin Action</h2>
+            <p class="text-gray-600 mb-6">Choose where you would like to go next.</p>
+            <div class="space-y-4">
+                <button id="goToRegisterBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                    Register New User
+                </button>
+                <button id="goToAdminPanelBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-800">
+                    Go to Admin Panel
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Ensure the DOM is fully loaded before trying to access elements
         document.addEventListener('DOMContentLoaded', () => {
-            // Get references to all necessary DOM elements
+            // --- Element References ---
+            const loginForm = document.getElementById('loginForm');
             const emailOrPhoneInput = document.getElementById('emailOrPhone');
             const passwordInput = document.getElementById('password');
             const togglePasswordButton = document.getElementById('togglePassword');
             const eyeOpenIcon = document.getElementById('eyeOpen');
             const eyeClosedIcon = document.getElementById('eyeClosed');
-            const loginForm = document.getElementById('loginForm');
             const emailPhoneError = document.getElementById('emailPhoneError');
             const messageBox = document.getElementById('messageBox');
             const loadingOverlay = document.getElementById('loadingOverlay');
+            const adminModal = document.getElementById('adminModal');
+            const goToRegisterBtn = document.getElementById('goToRegisterBtn');
+            const goToAdminPanelBtn = document.getElementById('goToAdminPanelBtn');
 
-            /**
-             * @function showMessage
-             * @description Displays a message in the message box element and applies styling.
-             * Automatically hides the loading overlay after showing the message.
-             * @param {string} message - The text message to display.
-             * @param {'success' | 'error'} type - The type of message, determines CSS classes.
-             */
-            const showMessage = (message, type = 'success') => {
-                messageBox.textContent = message; // Set message text
-                // Remove previous styling classes
+            // --- Helper Functions ---
+            const showMessage = (message, type = 'error') => {
+                messageBox.textContent = message;
                 messageBox.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
-                // Apply new styling based on message type
-                if (type === 'success') {
-                    messageBox.classList.add('bg-green-100', 'text-green-800');
-                } else {
-                    messageBox.classList.add('bg-red-100', 'text-red-800');
+                messageBox.classList.add(type === 'success' ? 'bg-green-100' : 'bg-red-100', type === 'success' ? 'text-green-800' : 'text-red-800');
+                hideLoading();
+            };
+
+            const showLoading = () => loadingOverlay.classList.add('visible');
+            const hideLoading = () => loadingOverlay.classList.remove('visible');
+            
+            const showAdminModal = () => adminModal.classList.add('visible');
+
+            /**
+             * This function seeds the local storage with a default admin user if one doesn't exist.
+             * This is for demonstration purposes to make the login work out-of-the-box.
+             * In a real application, you would have a secure registration process.
+             */
+            const seedDefaultAdmin = () => {
+                try {
+                    const storedAdmins = localStorage.getItem('admins');
+                    if (!storedAdmins) {
+                        const defaultAdmin = [{
+                            emailOrPhone: "admin@gmail.com",
+                            password: "E@gle@321"
+                        }];
+                        localStorage.setItem('admins', JSON.stringify(defaultAdmin));
+                        console.log('Default admin seeded in localStorage.');
+                    }
+                } catch (e) {
+                    console.error('Could not seed default admin:', e);
                 }
-                hideLoading(); // Always hide loading after a message is displayed
             };
+            
+            // Seed the admin on initial load.
+            seedDefaultAdmin();
 
-            /**
-             * @function showLoading
-             * @description Makes the full-page loading overlay visible by adding the 'visible' class.
-             */
-            const showLoading = () => {
-                loadingOverlay.classList.add('visible');
-            };
-
-            /**
-             * @function hideLoading
-             * @description Hides the full-page loading overlay by removing the 'visible' class.
-             */
-            const hideLoading = () => {
-                loadingOverlay.classList.remove('visible');
-            };
-
-            // --- Initial Page Load Handling ---
-            // This event listener fires when the entire page (including all images, scripts, CSS)
-            // has finished loading. This is ideal for hiding the initial loading spinner.
-            window.addEventListener('load', () => {
-                hideLoading(); // Hide the loading overlay after the entire page is fully loaded
-            });
+            // --- Event Listeners ---
 
             // Input validation for Email or Phone Number field
             emailOrPhoneInput.addEventListener('input', () => {
                 const value = emailOrPhoneInput.value.trim();
-                // Regular expressions for email and phone number validation
                 const isEmail = /^[^@]+@gmail\.com$/.test(value);
                 const isPhoneNumber = /^\d{10}$/.test(value);
 
-                // Show/hide error message and apply border styling based on validation
                 if (value === '') {
                     emailPhoneError.classList.add('hidden');
                     emailOrPhoneInput.classList.remove('border-red-500', 'border-green-500');
@@ -257,70 +250,77 @@ if (choice) {
                 }
             });
 
-            // Toggle password visibility functionality
+            // Toggle password visibility
             togglePasswordButton.addEventListener('click', () => {
-                // Change input type between 'password' and 'text'
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
-                // Toggle eye icons visibility
                 eyeOpenIcon.classList.toggle('hidden');
                 eyeClosedIcon.classList.toggle('hidden');
             });
 
+            // Handle Admin Modal button clicks
+            goToRegisterBtn.addEventListener('click', () => {
+                window.location.href = 'admin.html'; // Assuming admin.html is the registration page
+            });
+
+            goToAdminPanelBtn.addEventListener('click', () => {
+                window.location.href = 'Adminpanel.html';
+            });
+
             // Handle form submission
             loginForm.addEventListener('submit', (event) => {
-                event.preventDefault(); // Prevent the default form submission behavior (page reload)
-
-                showLoading(); // Show the full-page loading overlay immediately upon form submission
+                event.preventDefault();
+                showLoading();
 
                 const emailOrPhone = emailOrPhoneInput.value.trim();
                 const password = passwordInput.value;
 
-                // Client-side validation before proceeding with login logic
+                // --- Client-side validation ---
                 if (!emailOrPhone || (!/^[^@]+@gmail\.com$/.test(emailOrPhone) && !/^\d{10}$/.test(emailOrPhone))) {
-                    showMessage("Please enter a valid 10-digit phone number or a @gmail.com email.", 'error');
+                    showMessage("Please enter a valid 10-digit phone number or a @gmail.com email.");
                     emailOrPhoneInput.focus();
-                    return; // Stop execution if validation fails
+                    return;
                 }
 
                 if (!password) {
-                    showMessage("Please enter your password.", 'error');
+                    showMessage("Please enter your password.");
                     passwordInput.focus();
-                    return; // Stop execution if validation fails
+                    return;
                 }
 
-                // --- Authenticate with localStorage (Simulated Login) ---
-                let admins = []; // Changed 'users' to 'admins'
-                try {
-                    const storedAdmins = localStorage.getItem('admins'); // Changed 'users' to 'admins'
-                    if (storedAdmins) {
-                        admins = JSON.parse(storedAdmins);
-                        // Ensure 'admins' is an array, reset if not
-                        if (!Array.isArray(admins)) {
-                            admins = [];
+                // --- Simulated Authentication with localStorage ---
+                // We use a timeout to simulate a network request.
+                setTimeout(() => {
+                    let admins = [];
+                    try {
+                        const storedAdmins = localStorage.getItem('admins');
+                        if (storedAdmins) {
+                            admins = JSON.parse(storedAdmins);
+                            if (!Array.isArray(admins)) admins = [];
                         }
+                    } catch (e) {
+                        console.error('Error parsing admins from localStorage:', e);
+                        admins = [];
                     }
-                } catch (e) {
-                    // Log error if parsing fails, and reset admins array
-                    console.error('Error parsing admins from localStorage:', e);
-                    admins = [];
-                }
 
-                // Find a matching admin in the stored data
-                const foundAdmin = admins.find(admin => admin.emailOrPhone === emailOrPhone && admin.password === password); // Changed 'user' to 'admin' and 'users' to 'admins'
+                    const foundAdmin = admins.find(admin => admin.emailOrPhone === emailOrPhone && admin.password === password);
 
-                if (foundAdmin) {
-                    showMessage("Login successful! Redirecting...", 'success');
-                    console.log('Login attempt:', { emailOrPhone, password });
-                    // Redirect to size.html after a short delay
-                    // The loading spinner will remain visible during this delay
-                    setTimeout(() => {
-                        window.location.href = 'Adminpanel.html'; // Redirect to size.html
-                    }, 1500); // 1.5 second delay
-                } else {
-                    // Show error message if login fails. showMessage will hide the loading spinner.
-                    showMessage("Invalid email/phone or password. Please try again.", 'error');
-                }
+                    if (foundAdmin) {
+                        // Special check for the main admin to show the modal
+                        if (foundAdmin.emailOrPhone === 'admin@gmail.com') {
+                            hideLoading();
+                            showAdminModal();
+                        } else {
+                            // For any other registered admin/user
+                            showMessage("Login successful! Redirecting...", 'success');
+                            setTimeout(() => {
+                                window.location.href = 'Adminpanel.html'; // Or a general dashboard
+                            }, 1500);
+                        }
+                    } else {
+                        showMessage("Invalid email/phone or password. Please try again.");
+                    }
+                }, 1000); // 1-second delay to simulate loading
             });
         });
     </script>
