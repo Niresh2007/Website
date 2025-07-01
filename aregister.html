@@ -146,12 +146,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (enteredEmail === defaultEmail && enteredPassword === defaultPassword) {
             // Show confirm box
-            const choice = confirm("✅ Login successful!\n\nClick OK to open Register.\nClick Cancel to go to Admin Panel.");
-            if (choice) {
-                window.location.href = "admin.html";
-            } else {
-                window.location.href = "Adminpanel.html";
-            }
+           const choice = confirm("Register or Adminpanel?");
+if (choice) {
+    window.location.href = "admin.html"; // OK → Register
+} else {
+    window.location.href = "Adminpanel.html"; // Cancel → Admin Panel
+}
+
         } else {
             errorMsg.textContent = "❌ Invalid email or password.";
             errorMsg.classList.remove("hidden");
